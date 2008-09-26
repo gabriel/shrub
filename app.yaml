@@ -1,0 +1,19 @@
+application: shrub
+version: 1
+runtime: python
+api_version: 1
+
+# /shrub is a reserved namespace (bucket). All non-S3 routes should fall under that to avoid conflicts with S3 buckets.
+handlers:
+- url: /test.*
+  script: test.py
+  
+- url: /shrub
+  static_dir: public/
+
+- url: /favicon.ico
+  static_files: public/favicon.ico
+  upload: public/favicon.ico
+  
+- url: /.*
+  script: main.py

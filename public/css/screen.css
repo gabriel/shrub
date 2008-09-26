@@ -1,0 +1,294 @@
+h1 {
+  font-size: 2em;
+  margin: 1em 0 0.5em 0;
+}
+
+h2 {
+  font-size: 1.6em;
+}
+
+h1 span {
+  font-size: 0.6em;
+}
+
+a {
+  text-decoration: none;
+  border-bottom:1px solid #AACCFF;
+  color: #000000;
+}
+
+a:hover {
+  color:#114477;
+  border-bottom:1px solid #000000;
+}
+
+a:visited, a:active {
+  color: #000000;
+}
+
+hr {
+  border: none;   
+  width: 50%;
+  height: 20px;
+  background-color: #FFF; color: #FFF;
+}
+
+img {
+  vertical-align:middle; 
+}
+
+ol li {
+  list-style-type: decimal;
+  list-style-position: outside;
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: bold;
+}
+
+
+/* Header */
+
+#logo {
+  background: url(/shrub/images/shrub-leaf.png) no-repeat;
+  width: 127px;
+  height: 271px;
+  float:left;
+}
+
+#logo-free {
+  position: absolute;
+  background: url(/shrub/images/shrub-leaf2.png) no-repeat;
+  cursor: pointer;
+  width: 88px;
+  height: 315px;
+  top: 0px;
+  left: 0px;
+}
+
+
+/* Common */
+
+.disclaimer, .debug, .example { 
+  font-size: 0.8em;
+  color: #999999;
+}
+
+.inline {
+  display: inline;
+}
+
+.warn span {
+  padding: 2px 4px;
+  background: #FFE834;
+  border: 1px solid #F2E79D;
+}
+
+.rss-top {
+  position: absolute;
+  top: 30px;
+  right: 100px;
+}
+
+table.tabular {
+  border-width: 1px;
+  border-color: #CCCCCC;
+}
+
+table.tabular th {
+  font-weight: bold;
+}
+
+table.tabular th, table.tabular td {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #CCCCCC;
+  padding: 2px 8px 2px 4px;
+}
+
+/* List */
+
+table.s3 {
+  width: 100%;
+}
+
+table.s3 thead {
+  background: #F6F6F6;
+}
+
+table.s3 thead th {
+  padding: 6px 6px 2px 6px;
+  cursor: pointer;
+  border-bottom: 2px solid #CCCCCC;  
+}
+
+table.s3 thead th.sorted, table.s3 thead th:hover {
+  border-bottom: 2px solid #AACCFF;
+}
+
+table.s3 thead th a {
+ border-bottom: none;
+ font-size: 1.1em;
+}
+
+table.s3 .size {
+  text-align: right;
+}
+
+table.s3 td {
+  padding: 2px 4px;
+}
+
+table.s3 td img {
+  padding-right: 8px;
+}
+
+table.s3 tr td {
+  height: 2em;
+}
+
+table.s3 tr.odd {
+  background: #F6F6F6;
+}
+
+
+/* Footer */
+
+#ft {
+  margin: 80px 0 10px 0;
+}
+
+#ft p {
+  text-align: center;
+}
+
+
+/* YUI Overrides */
+
+#doc3 { margin: auto 50px; }
+
+
+/* Tape */
+
+#shrub-player { float:left; }
+
+#doc3.shrub-tape { margin: auto 0px; }
+
+ul#songs {
+  margin: 20px 0 0 0;
+}
+
+ul#songs span {
+  text-align: left;
+}
+
+ul#songs li { 
+  border-bottom: 1px solid #CCCCCC;
+  position: relative;
+  height: 4.6em;
+  padding: 10px 10px 10px 20px;
+}
+
+ul#songs li div.song-bar {
+ position: absolute;
+ top: 0; 
+ left: 0;
+ width: 0;
+ height: 100%;
+ border-right: 1px dotted #999999;
+ z-index: 1;
+}
+
+ul#songs li span {
+  z-index: 2;
+  position: absolute;
+}
+
+ul#songs li.playing {
+  
+}
+
+ul#songs .unknown {
+  color: #CCCCCC;
+}
+
+ul#songs li .song-name {
+  font-size: 2.6em;
+  z-index:3;
+}
+
+ul#songs li .song-loaded, ul#songs li .song-duration, ul#songs li .song-download, ul#songs li .song-album {
+  font-size: 1.2em;  
+  position: absolute;
+  bottom: 8px;  
+}
+
+ul#songs li .song-loaded {
+  font-weight: bold;
+  left: 64px;
+}
+
+ul#songs li .song-duration {  
+  font-weight: bold;
+  left: 20px;
+}
+
+ul#songs li .song-download {
+  left: 114px;
+}
+
+ul#songs li .song-album {
+  left: 114px;
+}
+
+ul#songs li .song-position {
+  font-size: 3em;
+  color: #333333;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+#tape-info {
+  position: fixed;
+  width: 100%;
+  height: 20px;
+  top: 0;
+  z-index: 4;
+  border-bottom: 1px solid #CCCCCC;
+}
+
+#tape-info p {
+  float: right;  
+  font-size: 1.2em;
+  height: 100%;
+  font-weight: bold;
+}
+
+#tape-info p a {
+  color: #EFEFEF;
+  padding: 4px 10px 0 10px;
+  border-bottom: none;
+}
+
+/* Tape / Pallette */
+
+ul#songs li div.song-bar {
+ background: #7AC242;
+}
+
+ul#songs li:hover {
+  background: #F7F9FE;
+}
+
+#tape-info {
+  background: #352726;
+}
+
+#tape-info p a:hover {
+  background: #666666;
+}
