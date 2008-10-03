@@ -38,6 +38,16 @@
           
           <hr/>
           
+          <h2>Questions?</h2>
+          <p>Visit the google group: <a href="http://groups.google.com/group/shrub-gae">shrub-gae</a></p>
+          
+          <hr/>
+          
+          <h2>Source</h2>
+          <p>Shrub is open source. You can find it at github: <a href="http://github.com/gabriel/shrub/tree/master">gabriel/shrub</a></p>
+          
+          <hr/>
+          
           <h2>URL parameters</h2>
           
           <table id="url-params" class="tabular">

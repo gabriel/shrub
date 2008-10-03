@@ -4,6 +4,8 @@ Amazon S3 Proxy for Google App Engine.
 
 The idea is to have a proxy to act in between S3 and browsers or other devices. 
 
+Questions? See http://groups.google.com/group/shrub-gae
+
 Examples of formats that Shrub exposes are:
 
 * RSS
@@ -17,6 +19,17 @@ The main library: shrub/
 Third party libraries: lib/
 Static assets: public/
 Tests: test/
+
+=== Running
+
+To run locally:
+
+1) Clone the repo: git clone git://github.com/gabriel/shrub.git
+2) Start up GoogleAppEngineLauncher (Get GoogleAppEngine SDK + Launcher at http://code.google.com/appengine/)
+3) Right click on screen, and choose Add Existing
+4) Choose path to cloned repo.
+5) Hit run.
+6) Go to http://localhost:8080/
 
 === Other Libraries
 

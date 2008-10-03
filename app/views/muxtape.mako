@@ -46,10 +46,10 @@
   </div>
   
   <div id="ft">
-    <p>Based on <a href="http://muxtape.com">MuxTape</a> and <a href="http://opentape.fm/">OpenTape</a>.</p>
+    <p>Based on <a href="http://muxtape.com">MuxTape</a> and <a href="http://opentape.fm/">OpenTape</a>.</p>    
+    <p>Files: <a href="${list_url}">${list_url}</a></p>    
     <%include file="footer.mako"/>
     <hr/>
-    <p>Files: <a href="${list_url}">${list_url}</a></p>
     <p class="debug">XSPF: ${xspf_url}</p>    
     <p class="debug">Debug: <a href="" onClick="debugReloadID3(); return false;">Reload ID3</a></p>
   </div>

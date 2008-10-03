@@ -74,11 +74,12 @@
   </div>
   
   <div id="ft">    
+    <p>
       Formats: 
         <a href="/${path}/?format=rss">RSS</a> /
         <a href="/${path}/?format=json">JSON</a> /
         <a href="/${path}/?format=tape">*Tape</a>
-      </p>
+    </p>
     <%include file="footer.mako"/>
     <p><span class="debug">Proxied: ${s3response.url}</span></p>
   </div>
