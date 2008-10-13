@@ -56,7 +56,7 @@
               <a class="name folder" href="/${file.name_with_prefix(path)}">${file.name}</a>              
             %else:
               <img src="/shrub/images/page_white.png"/>
-              <a class="name file" href="${file.to_url(False)}">${file.name}</a>
+              <a class="name file" href="${file.url}">${file.name}</a>
             %endif
           </td>
           <td class="date">${file.pretty_last_modified('-')}</td>

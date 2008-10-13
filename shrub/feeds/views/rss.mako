@@ -13,7 +13,7 @@
       ${he.if_tag(item, 'title', html_escape=True)}\
       ${he.if_tag(item, 'description', html_escape=True)}\
       ${he.if_tag(item, 'link', html_escape=True)}\
-      <pubDate>${item.rfc822_pub_date()}</pubDate>
+      <pubDate>${item.rfc822_pub_date}</pubDate>
       ${he.if_tag(item, 'guid', html_escape=True)}\
     </item>
     %endfor

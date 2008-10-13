@@ -21,11 +21,11 @@ class TapeResponse(BaseResponse):
     tracks = []
     id3_urls = []
     for file in s3response.files:
-      if file.extension() == 'mp3':
-        tracks.append(file.to_xspf_track())
-        id3_urls.append('%s?format=id3-json' % file.to_appspot_url())
+      if file.extension == 'mp3':
+        tracks.append(file.xspf_track)
+        id3_urls.append('%s?format=id3-json' % file.appspot_url)
           
-    values = dict(title='Mix Tape (%s)' % s3response.path(), xspf_url=xspf_url, list_url=list_url, tracks=tracks, id3_urls=id3_urls)
+    values = dict(title='Mix Tape (%s)' % s3response.path, xspf_url=xspf_url, list_url=list_url, tracks=tracks, id3_urls=id3_urls)
     
     self.render("muxtape.mako", values)
     
@@ -35,14 +35,14 @@ class XSPFResponse(BaseResponse):
   def handle(self, s3response):    
     url = s3response.url
     files = s3response.files
-    path = s3response.path()
+    path = s3response.path
     
     files.sort(cmp=lambda x, y: S3Utils.file_comparator(x, y, 'name', True))
     
     tracks = []
     
     for file in files:
-      tracks.append(file.to_xspf_track())      
+      tracks.append(file.xspf_track)      
       
     title = u'%s (XSPF)' % path
     

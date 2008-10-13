@@ -8,6 +8,7 @@ class S3HTTPResponse(object):
     
   def ok(self):
     return (self.status_code >= 200 and self.status_code <= 299)
+  ok = property(ok)
 
 
 class S3Response(S3HTTPResponse):
@@ -17,6 +18,7 @@ class S3Response(S3HTTPResponse):
     self.content = class_(content)
     self.message = None
     
+  @property
   def path_components(self):
     bucket_name = self.content.name
     prefix = self.content.prefix    
@@ -27,8 +29,9 @@ class S3Response(S3HTTPResponse):
       
     return dirs
     
+  @property
   def path(self):
-    return u'/'.join(self.path_components())
+    return u'/'.join(self.path_components)
     
             
 class S3ErrorResponse(S3HTTPResponse):

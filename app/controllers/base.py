@@ -22,13 +22,14 @@ class BasePage(webapp.RequestHandler):
   def view_path(self):
     return os.path.join(os.path.dirname(__file__), "..", "views")
     
+  @property
   def template_lookup(self):
     if not self._template_lookup:
       self._template_lookup = TemplateLookup(directories=[self.view_path(), feeds.view_path()], output_encoding='utf-8')
     return self._template_lookup
     
   def get_template(self, name):
-    return self.template_lookup().get_template(name)
+    return self.template_lookup.get_template(name)
   
   def set_content_type(self, content_type):
     self.response.headers['Content-Type'] = content_type

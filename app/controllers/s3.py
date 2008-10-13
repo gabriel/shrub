@@ -59,7 +59,7 @@ class S3Page(BasePage):
     s3response = S3().list(bucket_name, max_keys, prefix, delimiter, marker)        
       
     # If not 2xx, show friendly error page
-    if not s3response.ok():
+    if not s3response.ok:
       handler = ErrorResponse(self)
       handler.handle(s3response)
       return
@@ -133,8 +133,8 @@ class HTMLResponse(BaseResponse):
   
   def handle(self, s3response):        
     files = s3response.files
-    path_components = s3response.path_components()      
-    path = s3response.path()    
+    path_components = s3response.path_components
+    path = s3response.path
 
     # Sort files
     sort = self.request.get('s', 'name')
@@ -166,7 +166,7 @@ class RSSResponse(BaseResponse):
 
   def handle(self, s3response):    
     files = s3response.files
-    path = s3response.path()    
+    path = s3response.path
 
     rss_items = []
     files.sort(cmp=lambda x, y: S3Utils.file_comparator(x, y, 'date', False))

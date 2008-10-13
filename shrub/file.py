@@ -67,11 +67,13 @@ class S3File:
     if not self.pretty_size_cache: self.pretty_size_cache = self.__pretty_size(self.size)
     return self.pretty_size_cache
     
+  @property
   def name_without_extension(self):
     position = self.name.rfind('.')
     if position == -1: return self.name
     return self.name[0:position]
-    
+  
+  @property
   def extension(self):
     position = self.name.rfind('.')
     if position == -1: return
@@ -84,16 +86,18 @@ class S3File:
       name = self.key
     
     return u'http://%s/%s/%s' % (shrub.utils.current_url(), urllib.quote(self.bucket.encode('utf-8')), urllib.quote(name))
+  appspot_url = property(to_appspot_url)
       
-  def to_url(self, secure):
+  def to_url(self, secure=False):
     scheme = 'http';
     if secure: scheme = 'https'    
     return u'%s://%s/%s/%s' % (scheme, self.DefaultLocation, urllib.quote(self.bucket.encode('utf-8')), urllib.quote(self.key.encode('utf-8')))
+  url = property(to_url)  
   
   def to_rss_item(self):
-    link = self.to_url(False)
+    link = self.url
     if self.is_folder:
-      link = self.to_appspot_url()
+      link = self.appspot_url
       
     description = None
     if not self.is_folder:
@@ -103,6 +107,8 @@ class S3File:
       if pretty_size: description += 'Size: %sb' % pretty_size      
     
     return shrub.feeds.rss.Item(self.name, None, description, pub_date=self.last_modified, guid=link)
+  rss_item = property(to_rss_item)
     
   def to_xspf_track(self):
-    return shrub.feeds.xspf.Track(location=self.to_url(False), meta=self.extension(), title=self.name_without_extension(), info=None)
+    return shrub.feeds.xspf.Track(location=self.url, meta=self.extension, title=self.name_without_extension, info=None)
+  xspf_track = property(to_xspf_track)

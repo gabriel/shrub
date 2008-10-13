@@ -11,5 +11,6 @@ class Item:
     self.pub_date = pub_date
     self.guid = guid
   
+  @property
   def rfc822_pub_date(self):
     return rfc822.formatdate(time.mktime(self.pub_date.timetuple()))
