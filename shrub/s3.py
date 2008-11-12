@@ -10,7 +10,7 @@ class S3:
   
   DefaultLocation = 's3.amazonaws.com'
   
-  def list(self, bucket_name, max_keys, prefix, delimiter, marker):
+  def list(self, bucket_name, max_keys, prefix, delimiter, marker, cache=60):
     
     url_options = { }
     
@@ -23,7 +23,8 @@ class S3:
     logging.info("URL: %s", url)
     
     try:
-      response = urlfetch.fetch(url)
+      headers = {'Cache-Control':'max-age=%s' % cache}
+      response = urlfetch.fetch(url, headers=headers)
       return S3BucketResponse(url, int(response.status_code), response.content)
     except Exception, detail:
       logging.error('Error: %s' % detail)
