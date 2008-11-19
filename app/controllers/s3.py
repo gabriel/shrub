@@ -175,7 +175,7 @@ class RSSResponse(BaseResponse):
       rss_items.append(file.to_rss_item())
 
     pub_date = datetime.datetime.now()
-    if rss_items.count > 0:
+    if len(rss_items) > 0:
       pub_date = rss_items[0].pub_date
 
     title = u'%s (Shrub)' % path
