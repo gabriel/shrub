@@ -21,7 +21,7 @@
         
         <hr/>
         
-        <p><a href="/">Home</a> &mdash; <a href="${path}">Refresh</a></p>
+        <p><a href="/">Home</a> &mdash; <a href="${request.url}">Refresh</a></p>
       
       </div>
     
