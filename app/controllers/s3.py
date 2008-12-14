@@ -35,7 +35,7 @@ class S3Page(BasePage):
   Request should be passed off based on their format or response type.
   """
   
-  def get(self):  
+  def _get(self):  
     max_keys = self.request.get('max-keys')
     delimiter = self.request.get('delimiter', '/')
     marker = self.request.get('marker')    
@@ -87,8 +87,16 @@ class S3Page(BasePage):
       handler.render_error(404, "The requested format parameter is unknown.", title="Not found")
       return
         
-    # Handle format
     if handler: handler.handle(s3response)
+
+  def get(self):
+    try:
+      self._get()
+    except DeadlineExceededError:
+      self.response.clear()
+      ErrorResponse(self).render_error(500, "The request couldn't be completed in time. Please try again.")
+      
+      
 
 class ErrorResponse(BaseResponse):
   """Handle standard error response."""
@@ -104,29 +112,32 @@ class ErrorResponse(BaseResponse):
     title = None
     message = None
     url = s3response.url
-    path = self.request_handler.request.path
+    request = self.request_handler.request
     
     status_code = s3response.status_code
     error_message = s3response.message
     
     if status_code == 403:
-      title = "Permission denied"
+      title = 'Permission denied'
       message = 'Shrub does not have permission to access this bucket. Shrub can only act on public buckets.'
     elif status_code == 404:
-      title = "Not found"
+      title = 'Not found'
       message = 'This bucket or folder was not found. Try verifying that it exists.'
-    elif status_code == 500:
-      title = "Not available"
+    elif status_code in range(400, 500):
+      title = 'Client error'
+      message = 'There was an error trying to access S3.'
+    elif status_code in range(500, 600):
+      title = 'Not available. Please try again.'
       message = 'There was an error trying to access S3. Please try again.' 
     else:
-      title = "Uknown error"
+      title = 'Unknown error'
       message = 'There was an unknown error.'
       
     if error_message:
-      message += '(%s)' % error_message
+      message += ' (%s)' % error_message
         
     self.request_handler.response.set_status(status_code)
-    self.request_handler.render("error.mako", dict(title=title, s3url=url, status_code=status_code, message=message, path=path))
+    self.request_handler.render("error.mako", dict(title=title, s3url=url, status_code=status_code, message=message, request=request))
       
 
 class HTMLResponse(BaseResponse):
