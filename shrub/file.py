@@ -39,7 +39,8 @@ class S3File:
     return u'%s/%s' % (self.bucket, self.key)
   
   def __json__(self):
-    return dict(bucket=self.bucket, key=self.key, etag=self.etag, lastModified=self.last_modified, size=self.size, storageClass=self.storage_class)
+    return dict(bucket=self.bucket, key=self.key, etag=self.etag, lastModified=self.last_modified,
+      size=self.size, storageClass=self.storage_class)
     
   def name_with_prefix(self, prefix):
     if prefix:

@@ -5,6 +5,7 @@ import cgi
 import datetime
 
 from google.appengine.ext import webapp
+from google.appengine.runtime import DeadlineExceededError
 
 from mako.template import Template
 from mako.lookup import TemplateLookup

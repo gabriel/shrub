@@ -71,7 +71,26 @@
           <hr/>
           
           <h2>JSON</h2>
-          <p>Get list bucket response in JSON format with <em>format=json</em> URL parameter.<br/> For example, <a href="/s3hub?format=rss">http://shrub.appspot.com/s3hub?format=json</a> <br/><span class="disclaimer">See limitations below.</span></p>
+          <p>Get list bucket response in JSON format with <em>format=json</em> URL parameter.<br/> For example, <a href="/s3hub?format=json">http://shrub.appspot.com/s3hub?format=json</a> <br/><span class="disclaimer">See limitations below.</span><br/><br/></p>
+<pre>
+{"maxKeys": "1000", 
+ "prefix": "", 
+ "commonPrefixes": [], 
+ "isTrucated": false, 
+ "contents": [
+     {"etag": "\"ee8a4f9c22e98b6dfb1781650eaffe01\"", 
+      "storageClass": "STANDARD", 
+      "key": "S3Hub-0.5.1.dmg", 
+      "lastModified": 1213991757, 
+      "bucket": "s3hub", 
+      "size": 2635399}, 
+     {"etag": "\"cb8d95164e9696823f7b01b306840896\"", 
+      "storageClass": "STANDARD", 
+      "key": "S3Hub-0.5.10.dmg", 
+      "lastModified": 1213991757, 
+      "bucket": "s3hub", 
+      "size": 2779097}, ...
+</pre>
           
           <hr/>
           

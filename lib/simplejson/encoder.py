@@ -313,7 +313,7 @@ class JSONEncoder(object):
             for chunk in self._iterencode_dict(o, markers):
                 yield chunk
         elif isinstance(o, datetime.datetime): 
-            key = time.mktime(o.timetuple())        
+            yield str(int(time.mktime(o.timetuple())))
         else:
             if markers is not None:
                 markerid = id(o)
