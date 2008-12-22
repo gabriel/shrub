@@ -21,7 +21,11 @@
         
         <hr/>
         
-        <p><a href="/">Home</a> &mdash; <a href="${request.url}">Refresh</a></p>
+        <p><a href="/">Home</a> 
+        %if request_url:
+        &mdash; <a href="${request_url}">Refresh</a>
+        %endif
+        </p>
       
       </div>
     

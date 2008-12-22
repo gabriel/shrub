@@ -82,6 +82,7 @@ class S3Page(BasePage):
     elif format == 'xspf': handler = XSPFResponse(self)
     elif format == 'tape': handler = TapeResponse(self)
     elif format == 'json': handler = JSONResponse(self)
+    elif format == 'error': handler = ErrorResponse(self)
     else:
       # If no handler for a format return error page
       handler = ErrorResponse(self)
@@ -114,6 +115,7 @@ class ErrorResponse(BaseResponse):
     message = None
     url = s3response.url
     request = self.request_handler.request
+    request_url = request.url if request else None
     
     status_code = s3response.status_code
     error_message = s3response.message
@@ -138,7 +140,7 @@ class ErrorResponse(BaseResponse):
       message += ' (%s)' % error_message
         
     self.request_handler.response.set_status(status_code)
-    self.request_handler.render("error.mako", dict(title=title, s3url=url, status_code=status_code, message=message, request=request))
+    self.request_handler.render("error.mako", dict(title=title, s3url=url, status_code=status_code, message=message, request_url=request_url))
       
 
 class HTMLResponse(BaseResponse):
