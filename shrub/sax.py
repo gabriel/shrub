@@ -14,6 +14,7 @@ class BucketContentHandler(ContentHandler):
     <Prefix></Prefix>
     <Marker></Marker>
     <MaxKeys>1000</MaxKeys>
+    <NextMarker>somefile</NextMarker>
     <IsTruncated>false</IsTruncated>
     <Contents>
       <Key>01 Gabe&apos;s Mix Tape 2007-11-17.mp3</Key>
@@ -29,6 +30,7 @@ class BucketContentHandler(ContentHandler):
   def __init__(self, content=None):
     self.name = None
     self.marker = None
+    self.next_marker = None
     self.is_truncated = False
     self.prefix = None
     self.max_keys = None  
@@ -99,6 +101,8 @@ class BucketContentHandler(ContentHandler):
       self.is_truncated = content == 'true'
     elif name == 'Marker':
       self.marker = content
+    elif name == 'NextMarker':
+      self.next_marker = content
     elif name == 'Prefix':
       self.prefix = content
     elif name == 'MaxKeys':

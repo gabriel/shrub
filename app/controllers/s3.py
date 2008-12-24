@@ -174,7 +174,7 @@ class HTMLResponse(BaseResponse):
 class JSONResponse(BaseResponse):
 
   def handle(self, s3response):
-    self.render_json(s3response.content)
+    self.render_json(s3response.data)
     
 class RSSResponse(BaseResponse):
 

@@ -6,22 +6,24 @@ class S3HTTPResponse(object):
     self.url = url
     self.status_code = status_code
     
+  @property
   def ok(self):
     return (self.status_code >= 200 and self.status_code <= 299)
-  ok = property(ok)
 
 
 class S3Response(S3HTTPResponse):
   
-  def __init__(self, class_, url, status_code, content=None):
+  def __init__(self, parser_class, url, status_code, content=None, try_count=None, times=None):
     super(S3Response, self).__init__(url, status_code)
-    self.content = class_(content)
+    self.data = parser_class(content)
     self.message = None
+    self.try_count = try_count
+    self.times = times
     
   @property
   def path_components(self):
-    bucket_name = self.content.name
-    prefix = self.content.prefix    
+    bucket_name = self.data.name
+    prefix = self.data.prefix    
         
     dirs = [ bucket_name ]
     if prefix: 
@@ -32,12 +34,16 @@ class S3Response(S3HTTPResponse):
   @property
   def path(self):
     return u'/'.join(self.path_components)
-    
+  
+  @property
+  def total_time(self):
+    if self.times is None: return None
+    return reduce(lambda x, y: x+y, self.times)
             
 class S3ErrorResponse(S3HTTPResponse):
   
-  def __init__(self, url, status_code, message):
-    super(S3ErrorResponse, self).__init__(url, status_code)
+  def __init__(self, url, status_code, message, **kwargs):
+    super(S3ErrorResponse, self).__init__(url, status_code, **kwargs)
     self.message = message
     
   def __str__(self):
@@ -46,11 +52,10 @@ class S3ErrorResponse(S3HTTPResponse):
     
 class S3BucketResponse(S3Response):
   
-  def __init__(self, url, status_code, content=None):
-    super(S3BucketResponse, self).__init__(BucketContentHandler, url, status_code, content)
+  def __init__(self, url, status_code, content, **kwargs):
+    super(S3BucketResponse, self).__init__(BucketContentHandler, url, status_code, content, **kwargs)
     
-    self.is_truncated = self.content.is_truncated
-    self.max_keys = self.content.max_keys
-    self.files = self.content.files
-  
+    self.is_truncated = self.data.is_truncated
+    self.max_keys = self.data.max_keys
+    self.files = self.data.files
 

@@ -24,7 +24,7 @@
       
         %if s3response.is_truncated:
           <hr/>
-          <p class="warn"><span>There were too many items ( &gt; ${handler.max_keys} ) in the current bucket to display. The results were truncated and may be inaccurate.</span></p>
+          <p class="warn"><span>The response was truncated (max-keys=${s3response.data.max_keys}).</span></p>
           <hr/>
         %endif
         
@@ -81,7 +81,12 @@
         <a href="/${path}/?format=tape">*Tape</a>
     </p>
     <%include file="footer.mako"/>
-    <p><span class="debug">Proxied: ${s3response.url}</span></p>
+    <hr/>
+    <p>
+      <span class="debug">Proxied: ${s3response.url}</span><br/>
+      <span class="debug">Took: ${s3response.total_time}</span><br/>
+      <span class="debug">Attempts: ${s3response.try_count}</span>
+    </p>
   </div>
         
 </div>
