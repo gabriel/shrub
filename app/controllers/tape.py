@@ -6,7 +6,7 @@ from id3 import id3reader
 from id3 import id3data
 
 from shrub.utils import S3Utils
-from app.controllers.base import BaseResponse
+from app.controllers.base import BaseResponse, JSONResponse
 
 class TapeResponse(BaseResponse):
   
@@ -48,15 +48,17 @@ class XSPFResponse(BaseResponse):
     
     values = dict(title=title, creator='Shrub', info='http://shrub.appspot.com', location=url, tracks=tracks)
   
-    self.render("xspf.mako", values, 'text/xml;charset=utf-8')
+    self.render("xspf.mako", values, 'text/xml; charset=utf-8')
     
     
-class ID3Response(BaseResponse):
+class ID3Response(JSONResponse):
   
   def load_url(self, url, format='json', cache_key=None):
     
-    if self.request_handler.render_json_with_cache(cache_key):
+    if self.render_json_from_cache(cache_key):
       return
+    
+    callback = self.request.get("callback", None)
     
     logging.info("Loading url: %s" % url)
     fetch_headers = dict(Range='bytes=0-1024') 
@@ -79,7 +81,7 @@ class ID3Response(BaseResponse):
       )
 
       if format == 'json':        
-        self.render_json(values, cache_key=cache_key)
+        self.render_json(values, cache_key=cache_key, callback=callback)
         
     except id3reader.Id3Error, detail:
       self.render_json(dict(error=str(detail)))
