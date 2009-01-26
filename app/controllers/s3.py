@@ -13,12 +13,12 @@ from mako.lookup import TemplateLookup
 from shrub.utils import S3Utils
 from shrub.s3 import S3
 
-from app.controllers.base import BasePage, BaseResponse
-from app.controllers.tape import TapeResponse, XSPFResponse, ID3Response
+from app.controllers import base
+from app.controllers import tape
 
 from shrub import feeds
 
-class DefaultPage(BasePage):
+class DefaultPage(base.BasePage):
   """Home page"""
 
   def get(self):
@@ -29,7 +29,7 @@ class DefaultPage(BasePage):
 
     self.render("index.mako", dict(title="Shrub / Amazon S3 Proxy"))
 
-class S3Page(BasePage):
+class S3Page(base.BasePage):
   """
   Front controller for all S3 style requests (until I figure out how to do more advanced routing). 
   
@@ -53,7 +53,7 @@ class S3Page(BasePage):
     
     if format == 'id3-json':
       url = 'http://%s/%s' % (S3.DefaultLocation, self.request.path)
-      ID3Response(self).load_url(url, 'json', cache_key=cache_key)
+      tape.ID3Response(self).load_url(url, 'json', cache_key=cache_key)
       return
         
     # Make S3 request
@@ -79,8 +79,8 @@ class S3Page(BasePage):
     
     # Get handler for format
     if format == 'rss': handler = RSSResponse(self)
-    elif format == 'xspf': handler = XSPFResponse(self)
-    elif format == 'tape': handler = TapeResponse(self)
+    elif format == 'xspf': handler = tape.XSPFResponse(self)
+    elif format == 'tape': handler = tape.TapeResponse(self)
     elif format == 'json': handler = JSONResponse(self)
     elif format == 'error': handler = ErrorResponse(self)
     else:
@@ -88,8 +88,9 @@ class S3Page(BasePage):
       handler = ErrorResponse(self)
       handler.render_error(404, "The requested format parameter is unknown.", title="Not found")
       return
-        
-    if handler: handler.handle(s3response)
+      
+    # Render response with handler
+    handler.handle(s3response)
 
   def get(self):
     try:
@@ -97,53 +98,8 @@ class S3Page(BasePage):
     except DeadlineExceededError:
       self.response.clear()
       ErrorResponse(self).render_error(500, "The request couldn't be completed in time. Please try again.")
-      
-      
 
-class ErrorResponse(BaseResponse):
-  """Handle standard error response."""
-  
-  def __init__(self, request_handler):
-    self.request_handler = request_handler
-    
-  def render_error(self, status_code, error_message=None, title="Error"):    
-    self.request_handler.response.set_status(status_code)
-    self.request_handler.render("error.mako", dict(title=title, s3url=None, status_code=status_code, message=error_message, path=None))
-  
-  def handle(self, s3response):
-    title = None
-    message = None
-    url = s3response.url
-    request = self.request_handler.request
-    request_url = request.url if request else None
-    
-    status_code = s3response.status_code
-    error_message = s3response.message
-    
-    if status_code == 403:
-      title = 'Permission denied'
-      message = 'Shrub does not have permission to access this bucket. Shrub can only act on public buckets.'
-    elif status_code == 404:
-      title = 'Not found'
-      message = 'This bucket or folder was not found. Try verifying that it exists.'
-    elif status_code in range(400, 500):
-      title = 'Client error'
-      message = 'There was an error trying to access S3.'
-    elif status_code in range(500, 600):
-      title = 'Not available. Please try again.'
-      message = 'There was an error trying to access S3. Please try again.' 
-    else:
-      title = 'Unknown error'
-      message = 'There was an unknown error.'
-      
-    if error_message:
-      message += ' (%s)' % error_message
-        
-    self.request_handler.response.set_status(status_code)
-    self.request_handler.render("error.mako", dict(title=title, s3url=url, status_code=status_code, message=message, request_url=request_url))
-      
-
-class HTMLResponse(BaseResponse):
+class HTMLResponse(base.BaseResponse):
   
   def handle(self, s3response):        
     files = s3response.files
@@ -171,12 +127,12 @@ class HTMLResponse(BaseResponse):
   
     self.render("list.mako", template_values)
 
-class JSONResponse(BaseResponse):
-
+class JSONResponse(base.JSONResponse):
+  
   def handle(self, s3response):
-    self.render_json(s3response.data)
-    
-class RSSResponse(BaseResponse):
+    super(JSONResponse, self).handle(s3response.data)
+
+class RSSResponse(base.BaseResponse):
 
   def handle(self, s3response):    
     files = s3response.files
@@ -197,3 +153,42 @@ class RSSResponse(BaseResponse):
 
     assigns = dict(title=title, description=u'RSS feed for %s' % s3response.url, items=rss_items, link=link, pub_date=pub_date)
     self.render("rss.mako", assigns, 'text/xml;charset=utf-8')
+    
+class ErrorResponse(base.BaseResponse):
+  """Handle standard error response."""
+
+  def render_error(self, status_code, error_message=None, title="Error"):    
+    self.request_handler.response.set_status(status_code)
+    self.request_handler.render("error.mako", dict(title=title, s3url=None, status_code=status_code, message=error_message, path=None))
+
+  def handle(self, s3response):
+    title = None
+    message = None
+    url = s3response.url
+    request = self.request
+    request_url = request.url if request else None
+
+    status_code = s3response.status_code
+    error_message = s3response.message
+
+    if status_code == 403:
+      title = 'Permission denied'
+      message = 'Shrub does not have permission to access this bucket. Shrub can only act on public buckets.'
+    elif status_code == 404:
+      title = 'Not found'
+      message = 'This bucket or folder was not found. Try verifying that it exists.'
+    elif status_code in range(400, 500):
+      title = 'Client error'
+      message = 'There was an error trying to access S3.'
+    elif status_code in range(500, 600):
+      title = 'Not available. Please try again.'
+      message = 'There was an error trying to access S3. Please try again.' 
+    else:
+      title = 'Unknown error'
+      message = 'There was an unknown error.'
+
+    if error_message:
+      message += ' (%s)' % error_message
+
+    self.request_handler.response.set_status(status_code)
+    self.request_handler.render("error.mako", dict(title=title, s3url=url, status_code=status_code, message=message, request_url=request_url))
