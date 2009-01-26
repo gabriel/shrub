@@ -50,6 +50,7 @@
           
           <h2>URL parameters</h2>
           
+          <p>These parameters are available to all requests.</p>
           <table id="url-params" class="tabular">
             <thead>
               <tr><th>Parameter</th> <th>Description</th> <th>Accepted</th> <th>Default</th></tr>
@@ -92,6 +93,18 @@
       "size": 2779097}, ...
 </pre>
           
+          <br/>
+          
+          <h3>URL parameters</h3>
+          
+          <table id="url-params" class="tabular">
+            <thead>
+              <tr><th>Parameter</th> <th>Description</th> <th>Accepted</th> <th>Default</th></tr>
+            <tbody>
+            <tr><td>callback</td> <td>Callback function name to use in response</td> <td>Callback function names may only use upper and lowercase alphabetic characters (A-Z, a-z), numbers (0-9), the period (.), the underscore (_)</td> <td> </td></tr>
+            </tbody>
+          </table>
+          
           <hr/>
           
           <h2>ID3</h2>
@@ -112,6 +125,10 @@
           <p>
             Currently, Shrub will only get the first 1024 bytes of the mp3 (using the Range: bytes=0-1024 header) and will parse as much ID3 tag information as it can. ID3 tag information should be in the beginning of the file (so ID3v1 is not supported). If there was more information after the first 1024 bytes, then the isTruncated will be true. ID3 info is cached for 5 minutes.
           </p>
+          
+          <br/>
+          
+          <p>This request accepts JSON url parameters (like callback). See JSON section for more info.</p>
             
           <hr/>
           
