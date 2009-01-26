@@ -1,5 +1,6 @@
 import os
 import logging
+import re
 
 from google.appengine.ext import webapp
 from google.appengine.api import memcache
@@ -11,6 +12,12 @@ from mako.lookup import TemplateLookup
 import simplejson
 
 from shrub import feeds
+
+class ShrubException(Exception):
+  def __init__(self, code, message):
+    super(Exception, self).__init__()
+    self.code = code
+    self.message = message
 
 class BasePage(webapp.RequestHandler):
   """Base request handler to provide template lookup and rendering"""
@@ -51,14 +58,6 @@ class BasePage(webapp.RequestHandler):
       
     self.response.out.write(text)
     
-  def render_json(self, value, cache_key=None):
-    json = simplejson.dumps(value)
-    self.set_content_type("application/json")
-    self.render_text(json, cache_key=cache_key)
-    
-  def render_json_with_cache(self, cache_key):
-    return self.render_with_cache(cache_key, content_type="application/json")
-    
   def render_with_cache(self, cache_key, content_type=None):
     data = memcache.get(cache_key)
     if data is not None:
@@ -67,7 +66,7 @@ class BasePage(webapp.RequestHandler):
       return True    
     return False
 
-class BaseResponse:
+class BaseResponse(object):
   """Base response when using a front controller"""
 
   def __init__(self, request_handler):
@@ -77,5 +76,38 @@ class BaseResponse:
   def render(self, name, values, content_type=None, cache_key=None):
     self.request_handler.render(name, values, content_type=content_type, cache_key=cache_key)
 
-  def render_json(self, content, cache_key=None):
-    self.request_handler.render_json(content, cache_key=cache_key)
+class JSONResponse(BaseResponse):
+  
+  ContentType = "text/javascript; charset=utf-8"
+
+  def _wrap_in_callback(self, data, callback):
+    
+    # Callback function names may only use upper and lowercase alphabetic characters (A-Z, a-z), 
+    # numbers (0-9), the period (.), the underscore (_)
+    
+    if not re.match("^[a-zA-Z0-9._]+$", callback):
+      raise ShrubException("InvalidCallback", "Callback contains invalid characters")
+    
+    return "%s(%s)" % (callback, data)
+
+  def render_json(self, value, cache_key=None, callback=None):
+    json = simplejson.dumps(value)
+    self.request_handler.set_content_type(self.ContentType)
+    if callback:
+      json = self._wrap_in_callback(json, callback)
+    self.request_handler.render_text(json, cache_key=cache_key)
+
+  def render_json_from_cache(self, cache_key):
+    return self.request_handler.render_with_cache(cache_key, content_type=self.ContentType)
+  
+  def render_json_error(self, status_code, error):
+    self.request_handler.response.set_status(status_code)
+    self.render_json(dict(error=dict(code=error.code, message=error.message)))
+
+  def handle(self, response):
+    callback = self.request.get("callback", None)
+    try:
+      self.render_json(response, callback=callback)
+    except ShrubException, e:
+      self.render_json_error(500, e)
+    
