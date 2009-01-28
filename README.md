@@ -1,4 +1,4 @@
-= Shrub
+# Shrub
 
 Amazon S3 Proxy for Google App Engine.
 
@@ -20,18 +20,18 @@ Third party libraries: lib/
 Static assets: public/
 Tests: test/
 
-=== Running
+## Running
 
 To run locally:
 
-1) Clone the repo: git clone git://github.com/gabriel/shrub.git
-2) Start up GoogleAppEngineLauncher (Get GoogleAppEngine SDK + Launcher at http://code.google.com/appengine/)
-3) Right click on screen, and choose Add Existing
-4) Choose path to cloned repo.
-5) Hit run.
-6) Go to http://localhost:8080/
+1. Clone the repo: git clone git://github.com/gabriel/shrub.git
+2. Start up GoogleAppEngineLauncher (Get GoogleAppEngine SDK + Launcher at http://code.google.com/appengine/)
+3. Right click on screen, and choose Add Existing
+4. Choose path to cloned repo.
+5. Hit run.
+6. Go to http://localhost:8080/
 
-=== Other Libraries
+## Other Libraries
 
 lib/mako: mako (http://www.makotemplates.org)
 lib/iso8601: pyiso8601 (http://code.google.com/p/pyiso8601/)
@@ -49,18 +49,16 @@ public/images/...: famfamfam Silk icons (http://www.famfamfam.com/lab/icons/silk
 
 public/swf/player.swf: JW Flash audio player (http://www.jeroenwijering.com/?item=JW_FLV_Media_Player)
 
---
-
 Main leaf icon was purchased from iStockPhoto and is licensed by me (Gabriel Handford).
 
-=== Changes
+## Changes
 
 The following changes were made to libraries to handle certain features:
 
 * simplejson has some changes to automatically encode non-encodable data types via __json__ method if an object responds to it.
 * id3reader has some changes to allow it to parse from a buffer, and also to be able to read truncated ID3 tag data.
 
-== Tests
+## Tests
 
 To run the tests:
 
@@ -69,5 +67,5 @@ To run the tests:
 
   http://localhost:8080/test?package=controllers
 
---
+----
 Copyright 2008 Gabriel Handford
