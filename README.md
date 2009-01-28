@@ -14,11 +14,11 @@ Examples of formats that Shrub exposes are:
 * XSPF
 * HTML/Tape (like MuxTape/OpenTape)
 
-The web app: `app/`
-The main library: `shrub/`
-Third party libraries: `lib/`
-Static assets: `public/`
-Tests: `test/`
+- The web app: `app/`
+- The main library: `shrub/`
+- Third party libraries: `lib/`
+- Static assets: `public/`
+- Tests: `test/`
 
 ## Running
 
