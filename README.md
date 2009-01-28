@@ -4,7 +4,7 @@ Amazon S3 Proxy for Google App Engine.
 
 The idea is to have a proxy to act in between S3 and browsers or other devices. 
 
-Questions? See http://groups.google.com/group/shrub-gae
+Questions? See [shrub-gae google group](http://groups.google.com/group/shrub-gae)
 
 Examples of formats that Shrub exposes are:
 
@@ -14,11 +14,11 @@ Examples of formats that Shrub exposes are:
 * XSPF
 * HTML/Tape (like MuxTape/OpenTape)
 
-The web app: app/
-The main library: shrub/
-Third party libraries: lib/
-Static assets: public/
-Tests: test/
+The web app: `app/`
+The main library: `shrub/`
+Third party libraries: `lib/`
+Static assets: `public/`
+Tests: `test/`
 
 ## Running
 
@@ -33,21 +33,21 @@ To run locally:
 
 ## Other Libraries
 
-lib/mako: mako (http://www.makotemplates.org)
-lib/iso8601: pyiso8601 (http://code.google.com/p/pyiso8601/)
-lib/id3: id3reader http://nedbatchelder.com/code/modules/id3reader.html
-lib/simplejson: simplejson (https://svn.red-bean.com/bob/simplejson/tags/simplejson-1.3/docs/index.html)
+lib/mako: [mako](http://www.makotemplates.org)
+lib/iso8601: [pyiso8601](http://code.google.com/p/pyiso8601/)
+lib/id3: [id3reader](http://nedbatchelder.com/code/modules/id3reader.html)
+lib/simplejson: [simplejson](https://svn.red-bean.com/bob/simplejson/tags/simplejson-1.3/docs/index.html)
 
-test/lib/gaeunit: GAEUnit (http://code.google.com/p/gaeunit/)
+test/lib/gaeunit: [GAEUnit](http://code.google.com/p/gaeunit/)
 
-public/javascripts/swfobject: SWFObject http://code.google.com/p/swfobject/
-public/javascripts/jquery: jQuery http://jquery.com/
+public/javascripts/swfobject: [SWFObject](http://code.google.com/p/swfobject/)
+public/javascripts/jquery: [jQuery](http://jquery.com/)
 
-public/css/yui: YUI grid, fonts, reset (CSS) http://developer.yahoo.com/yui/
+public/css/yui: [YUI](http://developer.yahoo.com/yui/) grid, fonts, reset (CSS)
 
-public/images/...: famfamfam Silk icons (http://www.famfamfam.com/lab/icons/silk/)
+public/images/...: [famfamfam](http://www.famfamfam.com/lab/icons/silk/) Silk icons
 
-public/swf/player.swf: JW Flash audio player (http://www.jeroenwijering.com/?item=JW_FLV_Media_Player)
+public/swf/player.swf: [JW Flash audio player](http://www.jeroenwijering.com/?item=JW_FLV_Media_Player)
 
 Main leaf icon was purchased from iStockPhoto and is licensed by me (Gabriel Handford).
 
@@ -63,9 +63,7 @@ The following changes were made to libraries to handle certain features:
 To run the tests:
 
 * Uncomment the test routes in app.yaml
-* Load the dev_server and go to: 
-
-  http://localhost:8080/test?package=controllers
+* Load the dev_server and go to: [http://localhost:8080/test?package=controllers](http://localhost:8080/test?package=controllers)
 
 ----
 Copyright 2008 Gabriel Handford
