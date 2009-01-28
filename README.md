@@ -33,21 +33,19 @@ To run locally:
 
 ## Other Libraries
 
-lib/mako: [mako](http://www.makotemplates.org)
-lib/iso8601: [pyiso8601](http://code.google.com/p/pyiso8601/)
-lib/id3: [id3reader](http://nedbatchelder.com/code/modules/id3reader.html)
-lib/simplejson: [simplejson](https://svn.red-bean.com/bob/simplejson/tags/simplejson-1.3/docs/index.html)
+- lib/mako: [mako](http://www.makotemplates.org)
+- lib/iso8601: [pyiso8601](http://code.google.com/p/pyiso8601/)
+- lib/id3: [id3reader](http://nedbatchelder.com/code/modules/id3reader.html)
+- lib/simplejson: [simplejson](https://svn.red-bean.com/bob/simplejson/tags/simplejson-1.3/docs/index.html)
 
-test/lib/gaeunit: [GAEUnit](http://code.google.com/p/gaeunit/)
+- test/lib/gaeunit: [GAEUnit](http://code.google.com/p/gaeunit/)
 
-public/javascripts/swfobject: [SWFObject](http://code.google.com/p/swfobject/)
-public/javascripts/jquery: [jQuery](http://jquery.com/)
+- public/javascripts/swfobject: [SWFObject](http://code.google.com/p/swfobject/)
+- public/javascripts/jquery: [jQuery](http://jquery.com/)
 
-public/css/yui: [YUI](http://developer.yahoo.com/yui/) grid, fonts, reset (CSS)
-
-public/images/...: [famfamfam](http://www.famfamfam.com/lab/icons/silk/) Silk icons
-
-public/swf/player.swf: [JW Flash audio player](http://www.jeroenwijering.com/?item=JW_FLV_Media_Player)
+- public/css/yui: [YUI](http://developer.yahoo.com/yui/) grid, fonts, reset (CSS)
+- public/images/...: [famfamfam](http://www.famfamfam.com/lab/icons/silk/) Silk icons
+- public/swf/player.swf: [JW Flash audio player](http://www.jeroenwijering.com/?item=JW_FLV_Media_Player)
 
 Main leaf icon was purchased from iStockPhoto and is licensed by me (Gabriel Handford).
 
