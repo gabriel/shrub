@@ -24,8 +24,16 @@
       
         %if s3response.is_truncated:
           <hr/>
-          <p class="warn"><span>The response was truncated (max-keys=${s3response.data.max_keys}).</span></p>
-          <hr/>
+          <p><a href="/${path}/?marker=${s3response.next_marker | u}">Next page</a>
+          &mdash;
+          <span class="info">The response was truncated (max-keys=${s3response.data.max_keys}).</span>
+          </p>
+          <hr/>          
+        %endif
+        
+        %if warning_message:
+        <p><span class="warn">${warning_message}</span></p>
+        <hr/>
         %endif
         
         %if len(s3response.files) == 0:
@@ -53,10 +61,10 @@
           <td>
             %if file.is_folder:
               <img src="/shrub/images/folder.png"/>
-              <a class="name folder" href="/${file.name_with_prefix(path)}">${file.name}</a>              
+              <a class="name folder" href="/${file.name_with_prefix(path)}">${file.name | h}</a>              
             %else:
               <img src="/shrub/images/page_white.png"/>
-              <a class="name file" href="${file.url}">${file.name}</a>
+              <a class="name file" href="${file.url}">${file.name | h}</a>
             %endif
           </td>
           <td class="date">${file.pretty_last_modified('-')}</td>
@@ -83,7 +91,7 @@
     <%include file="footer.mako"/>
     <hr/>
     <p>
-      <span class="debug">Proxied: ${s3response.url}</span><br/>
+      <span class="debug">Proxied: <a href="${s3response.url}">${s3response.url}</a></span><br/>
       <span class="debug">Took: ${s3response.total_time}</span><br/>
       <span class="debug">Attempts: ${s3response.try_count}</span>
     </p>

@@ -78,7 +78,8 @@ strong {
 /* Common */
 
 .disclaimer, .debug, .example { 
-  font-size: 0.8em;
+  font-size: 0.9em;
+  line-height: 16px;
   color: #999999;
 }
 
@@ -86,10 +87,16 @@ strong {
   display: inline;
 }
 
-.warn span {
+.warn span, span.warn {
   padding: 2px 4px;
   background: #FFE834;
   border: 1px solid #F2E79D;
+}
+
+.info span, span.info {
+  padding: 4px 6px;
+  background: #EFEFEF;
+  border: 1px solid #CCCCCC;
 }
 
 .rss-top {

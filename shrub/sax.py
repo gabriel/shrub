@@ -10,7 +10,7 @@ class BucketContentHandler(ContentHandler):
   """Parses ListBucketResult response:
  
   <ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
-    <Name>mus1c</Name>
+    <Name>stuff</Name>
     <Prefix></Prefix>
     <Marker></Marker>
     <MaxKeys>1000</MaxKeys>
@@ -25,6 +25,7 @@ class BucketContentHandler(ContentHandler):
     </Contents>
     <Contents>...</Contents>
     <CommonPrefixes><Prefix>foo/bar</Prefix></CommonPrefixes>
+		<CommonPrefixes><Prefix>foo/baz</Prefix></CommonPrefixes>
   """
 
   def __init__(self, content=None):
@@ -89,8 +90,10 @@ class BucketContentHandler(ContentHandler):
       for prefix in self.handler.prefixes:
         if not prefix.name in self.dirs:
           self.files.append(prefix)
-          
       
+      self.handler = None
+      return
+    
     if self.handler != None: 
       self.handler.endElement(name)
       return

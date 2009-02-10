@@ -58,4 +58,7 @@ class S3BucketResponse(S3Response):
     self.is_truncated = self.data.is_truncated
     self.max_keys = self.data.max_keys
     self.files = self.data.files
+    self.next_marker = None
+    if self.is_truncated:
+      self.next_marker = self.data.next_marker
 

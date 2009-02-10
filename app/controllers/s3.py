@@ -39,7 +39,7 @@ class S3Page(base.BasePage):
   def _get(self):  
     max_keys = self.request.get('max-keys')
     delimiter = self.request.get('delimiter', '/')
-    marker = self.request.get('marker')    
+    marker = self.request.get('marker', None)    
     format = self.request.get('format', None)
     
     cache_key = self.request.url
@@ -74,7 +74,7 @@ class S3Page(base.BasePage):
     # If truncated with a request format; return 501
     if s3response.is_truncated:
       handler = ErrorResponse(self)
-      handler.render_error(501, "There were too many items ( &gt; %s ) in the current bucket to display. The results were truncated and may be inaccurate." % s3_response.max_keys)
+      handler.render_error(501, "There were too many items ( &gt; %s ) in the current bucket to sort and display." % s3response.max_keys)
       return
     
     # Get handler for format
@@ -105,13 +105,20 @@ class HTMLResponse(base.BaseResponse):
     files = s3response.files
     path_components = s3response.path_components
     path = s3response.path
+    warning_message = None
 
-    # Sort files
-    sort = self.request.get('s', 'name')
-    sort_asc = True    
-    if sort.endswith('-desc'): 
-      sort = sort.replace('-desc', '', 1)
-      sort_asc = False    
+    if s3response.is_truncated:
+      sort = 'name'
+      sort_asc = True
+      if self.request.get('s', None) is not None:
+        warning_message = 'Because the result was truncated, the sort option was ignored.'
+    else:
+      # Sort files
+      sort = self.request.get('s', 'name')
+      sort_asc = True
+      if sort.endswith('-desc'): 
+        sort = sort.replace('-desc', '', 1)
+        sort_asc = False    
     
     files.sort(cmp=lambda x, y: S3Utils.file_comparator(x, y, sort, sort_asc))
   
@@ -122,7 +129,8 @@ class HTMLResponse(base.BaseResponse):
       'path': path,
       'sort': sort,
       'sort_asc': sort_asc,
-      's3response': s3response
+      's3response': s3response,
+      'warning_message': warning_message
     }
   
     self.render("list.mako", template_values)
