@@ -91,7 +91,7 @@
     <%include file="footer.mako"/>
     <hr/>
     <p>
-      <span class="debug">Proxied: <a href="${s3response.url}">${s3response.url}</a></span><br/>
+      <span class="debug"><a href="${s3response.url}">Proxied</a></span><br/>
       <span class="debug">Took: ${s3response.total_time}</span><br/>
       <span class="debug">Attempts: ${s3response.try_count}</span>
     </p>

@@ -21,14 +21,16 @@ import wsgiref.handlers
 
 from google.appengine.ext import webapp
 
+from app.controllers.base import PrintEnvironmentHandler
 from app.controllers.s3 import DefaultPage, S3Page
 
 def main():
-  application = webapp.WSGIApplication([
-    ('/', DefaultPage),
-    ('/.*', S3Page),
-    ], debug=True)
-  wsgiref.handlers.CGIHandler().run(application)
+	application = webapp.WSGIApplication([
+		('/', DefaultPage),
+		('/shrub-env', PrintEnvironmentHandler),
+		('/.*', S3Page),
+		], debug=True)
+	wsgiref.handlers.CGIHandler().run(application)
 
 if __name__ == '__main__':
-  main()
+	main()

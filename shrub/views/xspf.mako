@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-<%namespace name="he" module="shrub.feeds.helper"/>\
+<%namespace name="he" module="shrub.helpers"/>\
 <?xml version="1.0" encoding="UTF-8"?>
 <playlist version="0" xmlns="http://xspf.org/ns/0/">
   <title>${title | h}</title>

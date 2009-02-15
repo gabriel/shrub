@@ -41,17 +41,14 @@
       %endfor
     </ul>
     
-    %endif    
+    %endif
     
   </div>
   
   <div id="ft">
-    <p>Based on <a href="http://muxtape.com">MuxTape</a> and <a href="http://opentape.fm/">OpenTape</a>.</p>    
-    <p>Files: <a href="${list_url}">${list_url}</a></p>    
+    <p><a href="${list_url}">Files</a> &mdash; <a href="${xspf_url}">XSPF</a> &mdash; <a href="#" onClick="loadID3(); return false;">Reload ID3</a> &mdash; <a href="${s3response.url}">Proxied</a></p>    
+    <p>Based on <a href="http://muxtape.com">MuxTape</a> and <a href="http://opentape.fm/">OpenTape</a>.</p>
     <%include file="footer.mako"/>
-    <hr/>
-    <p class="debug">XSPF: ${xspf_url}</p>    
-    <p class="debug">Debug: <a href="" onClick="debugReloadID3(); return false;">Reload ID3</a></p>
   </div>
 </div>
 
@@ -65,8 +62,7 @@ function playerReady(obj) {
 </script>
 
 <script type="text/javascript">
-$(document).ready(function() {
-
+var loadID3 = function() {
   var flashvars = { type: "xml", shuffle: "false", repeat: "list", file: "${xspf_url}"	}			
 	var params = { allowscriptaccess: "always" };			
 	var attributes = { id: "shrub-player", name: "shrub-player", styleclass: "flash-player" };
@@ -83,5 +79,7 @@ $(document).ready(function() {
   
   var id3Urls = ${base.to_json(id3_urls)};
   shrubTape.loadID3Urls(id3Urls);     
-});
+};
+
+$(document).ready(loadID3);
 </script>
