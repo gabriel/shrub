@@ -60,8 +60,7 @@ The following changes were made to libraries to handle certain features:
 
 To run the tests:
 
-* Uncomment the test routes in app.yaml
-* Load the dev_server and go to: [http://localhost:8080/test?package=controllers](http://localhost:8080/test?package=controllers)
+* Go to: [http://localhost:8080/test?package=controllers](http://localhost:8080/test?package=controllers)
 
 ----
 Copyright 2008 Gabriel Handford

@@ -2,14 +2,6 @@
 #
 # Copyright 2008 Gabriel Handford
 #
-"""
-Tests:
-
-To run the tests, load the dev_server and go to: 
-
-  http://localhost:8080/test?package=controllers
-  
-"""
 
 import sys
 import os
