@@ -10,7 +10,8 @@ from google.appengine.runtime import DeadlineExceededError
 from mako.template import Template
 from mako.lookup import TemplateLookup
 
-from shrub.utils import S3Utils
+import shrub.utils
+import shrub.gae_utils
 from shrub.s3 import S3
 
 from app.controllers import base
@@ -45,7 +46,7 @@ class S3Page(base.BasePage):
 		
 		cache_key = self.request.url
 		
-		bucket_name, prefix = S3Utils.parse_gae_request(self.request)
+		bucket_name, prefix = shrub.gae_utils.parse_gae_request(self.request)
 		
 		if not bucket_name:
 			handler = ErrorResponse(self)
@@ -122,7 +123,7 @@ class HTMLResponse(base.BaseResponse):
 				sort = sort.replace('-desc', '', 1)
 				sort_asc = False
 				
-		files.sort(cmp=lambda x, y: S3Utils.file_comparator(x, y, sort, sort_asc))
+		files.sort(cmp=lambda x, y: shrub.utils.file_comparator(x, y, sort, sort_asc))
 		
 		# Render response
 		template_values = {
@@ -151,7 +152,7 @@ class RSSResponse(base.BaseResponse):
 		path = s3response.path
 		
 		rss_items = []
-		files.sort(cmp=lambda x, y: S3Utils.file_comparator(x, y, 'date', False))
+		files.sort(cmp=lambda x, y: shrub.utils.file_comparator(x, y, 'date', False))
 		
 		for file in files[:50]:
 			rss_items.append(file.to_rss_item())

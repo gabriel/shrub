@@ -6,7 +6,7 @@ from datetime import datetime
 from google.appengine.api import urlfetch
 
 from shrub.response.base import S3BucketResponse, S3ErrorResponse
-from shrub.utils import S3Utils
+import shrub.utils
 
 class S3:
 
@@ -40,7 +40,7 @@ class S3:
 		url_options = dict(prefix=prefix, delimiter=delimiter, marker=marker)
 		if max_keys: url_options['max-keys'] = str(max_keys)
 
-		url = u'http://%s/%s?%s' % (S3.DefaultLocation, bucket_name, S3Utils.params_to_url(url_options, True))
+		url = u'http://%s/%s?%s' % (S3.DefaultLocation, bucket_name, shrub.utils.params_to_url(url_options, True))
 		logging.info("URL: %s", url)
 		
 		headers = {'Cache-Control':'max-age=%s' % (cache)}

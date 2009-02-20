@@ -4,7 +4,8 @@ import re
 import shrub.feeds.rss
 import shrub.feeds.xspf
 
-import shrub.utils
+from shrub.utils import url_escape
+from shrub.gae_utils import current_gae_url
 
 class S3File:
 
@@ -42,13 +43,17 @@ class S3File:
 		return dict(bucket=self.bucket, key=self.key, etag=self.etag, lastModified=self.last_modified,
 		size=self.size, storageClass=self.storage_class)
 		
-	def name_with_prefix(self, prefix):
+	def name_with_prefix(self, prefix, urlescape=False):
+		def maybe_escape(s):
+			return url_escape(s, plus=False) if urlescape else s
+
+		name = maybe_escape(self.name)
 		if prefix:
-			if prefix.endswith('/'): return prefix + self.name
-			else: return "%s/%s" % (prefix, self.name)
-			
-		return self.name
-		
+			if prefix.endswith('/'): return maybe_escape(prefix) + name
+			else: return "%s/%s" % (maybe_escape(prefix), name)
+
+		return name
+
 	def pretty_last_modified(self, default):
 		if not self.last_modified: return default
 		if not self.pretty_last_modified_cache: self.pretty_last_modified_cache = self.last_modified.strftime("%b %d, %Y, %I:%M %p")
@@ -86,13 +91,13 @@ class S3File:
 		else:
 			name = self.key
 			
-		return u'http://%s/%s/%s' % (shrub.utils.current_url(), urllib.quote(self.bucket.encode('utf-8')), urllib.quote(name))
+		return u'http://%s/%s/%s' % (current_gae_url(), url_escape(self.bucket), url_escape(name))
 	appspot_url = property(to_appspot_url)
 	
 	def to_url(self, secure=False):
 		scheme = 'http';
 		if secure: scheme = 'https'
-		return u'%s://%s/%s/%s' % (scheme, self.DefaultLocation, urllib.quote(self.bucket.encode('utf-8')), urllib.quote(self.key.encode('utf-8')))
+		return u'%s://%s/%s/%s' % (scheme, self.DefaultLocation, url_escape(self.bucket), url_escape(self.key))
 	url = property(to_url)
 	
 	def to_rss_item(self):
@@ -113,4 +118,3 @@ class S3File:
 	def to_xspf_track(self):
 		return shrub.feeds.xspf.Track(location=self.url, meta=self.extension, title=self.name_without_extension, info=None)
 	xspf_track = property(to_xspf_track)
-

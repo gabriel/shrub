@@ -5,7 +5,7 @@ from google.appengine.api import urlfetch
 from id3 import id3reader
 from id3 import id3data
 
-from shrub.utils import S3Utils
+import shrub.utils
 from app.controllers.base import BaseResponse, JSONResponse
 
 class TapeResponse(BaseResponse):
@@ -37,7 +37,7 @@ class XSPFResponse(BaseResponse):
 		files = s3response.files
 		path = s3response.path
 		
-		files.sort(cmp=lambda x, y: S3Utils.file_comparator(x, y, 'name', True))
+		files.sort(cmp=lambda x, y: shrub.utils.file_comparator(x, y, 'name', True))
 		
 		tracks = []
 		
