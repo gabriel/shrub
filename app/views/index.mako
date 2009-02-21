@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 <%namespace name="base" module="app.helpers.base"/>\
+<%namespace name="examples" module="app.helpers.examples"/>\
 <%inherit file="layout.mako" />
 
 <div id="doc" class="index">    
@@ -38,24 +39,28 @@
           
           <hr/>
           
-          <h2>Questions?</h2>
+          <h2 id="questions">Questions?</h2>
           <p>Visit the google group: <a href="http://groups.google.com/group/shrub-gae">shrub-gae</a></p>
           
           <hr/>
           
-          <h2>Source</h2>
+          <h2 id="source">Source</h2>
           <p>Shrub is open source. You can find it at github: <a href="http://github.com/gabriel/shrub/tree/master">gabriel/shrub</a></p>
           
           <hr/>
           
-          <h2>URL parameters</h2>
+          <h2 id="url_params">URL parameters</h2>
           
           <p>These parameters are available to all requests.</p>
           <table id="url-params" class="tabular">
             <thead>
               <tr><th>Parameter</th> <th>Description</th> <th>Accepted</th> <th>Default</th></tr>
             <tbody>
-            <tr><td>format</td> <td>Response format</td> <td>rss,json,id3-json,tape</td> <td>None (HTML)</td></tr>
+            <tr>
+              <td>format</td> <td>Response format</td> 
+              <td><a href="#rss">rss</a><br/><a href="#json">json</a><br/><a href="#id3">id3-json</a><br/><a href="#xspf">xspf</a><br/><a href="#tape">tape</a></td> 
+              <td>None (HTML)</td>
+            </tr>
             <tr><td>delimiter</td> <td>See S3 docs</td> <td>Passed to S3</td> <td> / </td></tr>
             <tr><td>prefix</td> <td>See S3 docs</td> <td>Passed to S3</td> <td> </td></tr>
             <tr><td>marker</td> <td>See S3 docs</td> <td>Passed to S3</td> <td> </td></tr>
@@ -66,12 +71,13 @@
           
           <hr/>          
           
-          <h2>RSS</h2>
-          <p>Get RSS feed with <em>format=rss</em> URL parameter. <br/> For example, <a href="/s3hub?format=rss">http://shrub.appspot.com/s3hub?format=rss</a> <br/><span class="disclaimer">See limitations below.</span></p>
+          <h2 id="rss">RSS</h2>
+          <p>Generate an RSS 2.0 feed with <em>format=rss</em> URL parameter. <br/> For example, <a href="/s3hub?format=rss">http://shrub.appspot.com/s3hub?format=rss</a>.<br/>
+          <span class="disclaimer">See limitations below.</span></p>
           
           <hr/>
           
-          <h2>JSON</h2>
+          <h2 id="json">JSON</h2>
           <p>Get list bucket response in JSON format with <em>format=json</em> URL parameter.<br/> For example, <a href="/s3hub?format=json">http://shrub.appspot.com/s3hub?format=json</a> <br/><span class="disclaimer">See limitations below.</span><br/><br/></p>
 <pre>
 {"maxKeys": "1000", 
@@ -104,10 +110,16 @@
             <tr><td>callback</td> <td>Callback function name to use in response</td> <td>Callback function names may only use upper and lowercase alphabetic characters (A-Z, a-z), numbers (0-9), the period (.), the underscore (_)</td> <td> </td></tr>
             </tbody>
           </table>
-          
+          <br/>
+          <br/>
+          <p>Example of <a href="http://shrub.appspot.com/s3hub?format=json">http://shrub.appspot.com/s3hub?format=json&callback=myCallback</a>:</p>
+          <br/>
+<pre>
+myCallback({"maxKeys": "1000", "prefix": "", ...})
+</pre>
           <hr/>
           
-          <h2>ID3</h2>
+          <h2 id="id3">ID3</h2>
           <p>Lookup ID3 information (returned as JSON) for an MP3 with <em>format=id3-json</em> URL parameter. <br/>For example, <a href="/m1xes/sub-pop-mix-1/01-Dntel-The_Distance_(ft._Arthur%26Yu).mp3?format=id3-json">
             http://shrub.appspot.com/m1xes/sub-pop-mix-1/01-Dntel-The_Distance_(ft._Arthur%26Yu).mp3?format=id3-json</a>
             <br/><br/>
@@ -130,6 +142,47 @@
           
           <p>This request accepts JSON url parameters (like callback). See JSON section for more info.</p>
             
+          <hr/>
+          <h2 id="xspf">XSPF</h2>
+          <p>Generate an XSPF playlist of media files in a bucket or folder with <em>format=xspf</em> URL parameter.<br/>
+          For example, <a href="/m1xes/sub-pop-mix-1/?format=xspf">http://shrub.appspot.com/m1xes/sub-pop-mix-1/?format=xspf</a>
+          </p>
+          <br/>
+          <br/>
+          
+<pre style="overflow:auto; width=380px">
+${examples.xspf_xml() | h}
+</pre>
+          <hr/>
+          <h3 id="music-player">Embeddable music player</h3>
+          <p>Embed an <a href="http://musicplayer.sourceforge.net/">xspf music player</a>, pointing to an XSPF format. For example:<br/>
+          <a href="http://shrub.appspot.com/m1xes/sub-pop-mix-1/?format=xspf">http://shrub.appspot.com/m1xes/sub-pop-mix-1/?format=xspf</a>
+          </p>
+          <br/>
+          <br/>
+          
+          <h4>XSPF Slim Player</h4>
+          <div id="xspf-slim-player" class="flash-player warn"><span>You need Javascript enabled and/or a recent version of Flash for the XSPF Slim Player to work.</span></div>
+          <hr/>
+          
+          <h4>XSPF Player</h4>
+          <div id="xspf-player" class="flash-player warn"><span>You need Javascript enabled and/or a recent version of Flash for the XSPF player to work.</span></div>
+          <hr/>
+          <h4>Object embed example</h4>
+<pre style="overflow:auto; width=380px">
+${examples.xspf_slim_player("http://shrub.appspot.com/m1xes/sub-pop-mix-1/?format=xspf") | h}
+</pre>
+          <hr/>
+          <h4>SWFObject embed example</h4>
+<pre style="overflow:auto; width=380px">
+${examples.xspf_slim_player_swf_object("http://shrub.appspot.com/m1xes/sub-pop-mix-1/?format=xspf") | h}
+</pre>
+          
+          <hr/>
+          
+          <h2>Crossdomain</h2>
+          <p>There is a <a href="/crossdomain.xml">crossdomain.xml</a>, so you can use URLs from flash. For example, an <a href="#music-player">XSPF Music Player</a>.</p>
+          
           <hr/>
           
           <h2>*Tape</h2>
@@ -163,3 +216,27 @@
   </div>
         
 </div>
+
+<script type="text/javascript">
+var loadXspfPlayer = function() {
+  var xspfUrl = "http://shrub.appspot.com/m1xes/sub-pop-mix-1/?format=xspf";
+  var flashvars = { };
+	var params = { allowscriptaccess: "always" };
+	var attributes = { id: "xspf-player", name: "xspf-player", styleclass:"xspf-player" };
+	
+	swfobject.embedSWF('/shrub/swf/xspf_player.swf?playlist_url=' + encodeURI(xspfUrl), "xspf-player", "400", "170", "8.0.0", false, flashvars, params, attributes);
+};
+
+var loadXspfSlimPlayer = function() {
+  var xspfUrl = "http://shrub.appspot.com/m1xes/sub-pop-mix-1/?format=xspf";
+  var flashvars = { };
+	var params = { allowscriptaccess: "always" };
+	var attributes = { id: "xspf-slim-player", name: "xspf-slim-player", styleclass:"xspf-slim-player" };
+	
+	swfobject.embedSWF('/shrub/swf/xspf_player_slim.swf?playlist_url=' + encodeURI(xspfUrl), "xspf-slim-player", "400", "15", "8.0.0", false, flashvars, params, attributes);
+};
+
+$(document).ready(loadXspfSlimPlayer);
+$(document).ready(loadXspfPlayer);
+
+</script>

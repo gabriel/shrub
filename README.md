@@ -45,7 +45,9 @@ To run locally:
 
 - public/css/yui: [YUI](http://developer.yahoo.com/yui/) grid, fonts, reset (CSS)
 - public/images/...: [famfamfam](http://www.famfamfam.com/lab/icons/silk/) Silk icons
+
 - public/swf/player.swf: [JW Flash audio player](http://www.jeroenwijering.com/?item=JW_FLV_Media_Player)
+- public/swf/xspf_player*.swf: [XSPF Music Player](http://musicplayer.sourceforge.net/)
 
 Main leaf icon was purchased from iStockPhoto and is licensed by me (Gabriel Handford).
 
