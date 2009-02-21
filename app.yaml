@@ -7,6 +7,7 @@ api_version: 1
 # All non-S3 routes should fall under that to avoid conflicts with S3 buckets.
 # Other reserved buckets include, /shrub-env and /test (for debugging and testing).
 handlers:
+  
 - url: /test.*
   script: test.py
 
@@ -16,6 +17,10 @@ handlers:
 - url: /favicon.ico
   static_files: public/favicon.ico
   upload: public/favicon.ico
+  
+- url: /crossdomain.xml
+  static_files: public/crossdomain.xml
+  upload: public/crossdomain.xml
 
 - url: /.*
   script: main.py

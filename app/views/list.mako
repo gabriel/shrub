@@ -86,6 +86,7 @@
       Formats: 
         <a href="/${path}/?format=rss">RSS</a> /
         <a href="/${path}/?format=json">JSON</a> /
+        <a href="/${path}/?format=xspf">XSPF</a> /
         <a href="/${path}/?format=tape">*Tape</a>
     </p>
     <%include file="footer.mako"/>

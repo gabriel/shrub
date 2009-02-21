@@ -8,11 +8,22 @@ h2 {
 }
 
 h3 {
-  font-size: 1.2em;
+  font-size: 1.4em;
+}
+
+h4 {
+	font-size: 1.2em;
+	padding-bottom: 6px;
 }
 
 h1 span {
   font-size: 0.6em;
+}
+
+pre {
+	background: #000;
+	color: #DEDEDE;
+	padding: 8px 8px;
 }
 
 a {

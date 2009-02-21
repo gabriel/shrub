@@ -44,9 +44,7 @@ class XSPFResponse(BaseResponse):
 		for file in files:
 			tracks.append(file.xspf_track)
 			
-		title = u'%s (XSPF)' % path
-		
-		values = dict(title=title, creator='Shrub', info='http://shrub.appspot.com', location=url, tracks=tracks)
+		values = dict(title=path, creator='Shrub', info='http://shrub.appspot.com', location=url, tracks=tracks)
 		
 		self.render("xspf.mako", values, 'text/xml; charset=utf-8')
 		

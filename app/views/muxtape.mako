@@ -58,13 +58,12 @@
 function playerReady(obj) {
   shrubPlayer.setPlayer(obj);
 }
-
 </script>
 
 <script type="text/javascript">
 var loadID3 = function() {
-  var flashvars = { type: "xml", shuffle: "false", repeat: "list", file: "${xspf_url}"	}			
-	var params = { allowscriptaccess: "always" };			
+  var flashvars = { type: "xml", shuffle: "false", repeat: "list", file: "${xspf_url}"};
+	var params = { allowscriptaccess: "always" };
 	var attributes = { id: "shrub-player", name: "shrub-player", styleclass: "flash-player" };
 	
 	swfobject.embedSWF('/shrub/swf/player.swf', "shrub-player", "0", "0", "8.0.0", false, flashvars, params, attributes);
