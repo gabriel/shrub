@@ -148,6 +148,20 @@ myCallback({"maxKeys": "1000", "prefix": "", ...})
           For example, <a href="/m1xes/sub-pop-mix-1/?format=xspf">http://shrub.appspot.com/m1xes/sub-pop-mix-1/?format=xspf</a>
           </p>
           <br/>
+          <h3>URL parameters</h3>
+          
+          <table class="tabular">
+            <thead>
+              <tr><th>Parameter</th> <th>Description</th></tr>
+            <tbody>
+            <tr>
+              <td>exts</td>
+              <td>List of extensions to filter (comma-delimited). For example, exts=mp3,foo,bar
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <br/>
           <br/>
           
 <pre style="overflow:auto; width=380px">

@@ -81,7 +81,7 @@ class S3Page(base.BasePage):
 			
 			# Get handler for format
 		if format == 'rss': handler = RSSResponse(self)
-		elif format == 'xspf': handler = tape.XSPFResponse(self)
+		elif format.startswith('xspf'): handler = tape.XSPFResponse(self)
 		elif format == 'tape': handler = tape.TapeResponse(self)
 		elif format == 'json': handler = JSONResponse(self)
 		elif format == 'error': handler = ErrorResponse(self)

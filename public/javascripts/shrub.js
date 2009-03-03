@@ -268,6 +268,7 @@ var shrubTape = (function() {
     },  	    
     
     onMetaChange: function(track, time) {
+      if (isNaN(time)) return;
       var node = $("#song-" + track + " .song-duration");
       node.html(time);
       if (time == "0:00") node.addClass("unknown");
@@ -275,6 +276,7 @@ var shrubTape = (function() {
     },
     
     onLoadedChange: function(track, percentage) {
+      if (isNaN(percentage)) return;
       var node = $("#song-" + track + " .song-loaded");
       node.html(percentage + "%")
       if (percentage > 0) node.removeClass("unknown");

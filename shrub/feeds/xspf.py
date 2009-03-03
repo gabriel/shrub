@@ -7,4 +7,7 @@ class Track:
 		self.meta = meta
 		self.title = title
 		self.info = info
+		
+	def __str__(self):
+		return 'location=%s,meta=%s,title=%s,info=%s' % (self.location, self.meta, self.title, self.info)
 
