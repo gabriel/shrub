@@ -11,7 +11,7 @@ import shrub.utils
 class S3:
 
 	DefaultLocation = 's3.amazonaws.com'
-	
+
 	def _fetch(self, url, retry_count, **kwargs):
 		"""Calls urlfetch.fetch with retry count"""
 		try_count = 0
@@ -20,14 +20,20 @@ class S3:
 		while try_count < retry_count:
 			try:
 				try_count += 1
-				fetch_start = datetime.now()
+
 				# Fetch the url
+				fetch_start = datetime.now()
 				response = urlfetch.fetch(url, **kwargs)
 				times.append(datetime.now() - fetch_start)
+
+				# TODO(gabe): Handle PermanentRedirect error messages (no Location header on 301 so need to handle manually)
+
 				# Retry on 5xx errors as well as urlfetch exceptions
 				if int(response.status_code) in xrange(500, 600):
 					continue
+
 				return response, try_count, times
+
 			except Exception, error:
 				logging.error('Error(%s): %s' % (try_count, error))
 				if try_count >= retry_count:
@@ -40,9 +46,10 @@ class S3:
 		url_options = dict(prefix=prefix, delimiter=delimiter, marker=marker)
 		if max_keys: url_options['max-keys'] = str(max_keys)
 
-		url = u'http://%s/%s?%s' % (S3.DefaultLocation, bucket_name, shrub.utils.params_to_url(url_options, True))
+		# Use http://bucketname.s3.amazonaws.com, instead of http://s3.amazonaws.com/bucketname
+		url = u'http://%s.%s/?%s' % (bucket_name, S3.DefaultLocation, shrub.utils.params_to_url(url_options, True))
 		logging.info("URL: %s", url)
-		
+
 		headers = {'Cache-Control':'max-age=%s' % (cache)}
 		try:
 			response, try_count, times = self._fetch(url, retry_count, headers=headers)
