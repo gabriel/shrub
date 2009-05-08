@@ -1,5 +1,7 @@
 from shrub.response.sax.bucket import BucketParser
 
+import logging
+
 class S3BaseResponse(object):
 
 	def __init__(self, url, status_code, try_count=None, times=None):

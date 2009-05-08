@@ -1,14 +1,17 @@
-import logging
+import re, iso8601, traceback, logging
 import xml.sax
-from xml.sax.handler import ContentHandler
-import re
-import iso8601
+from xml.sax.handler import ContentHandler, ErrorHandler
+
+
 
 from shrub.file import S3File
 
 from shrub.response.sax.object import ObjectParser
 
-class BucketParser(ContentHandler):
+class Parser(ContentHandler):
+	pass
+	
+class BucketParser(Parser):
 	"""
 	SAX parser for ListBucketResult response.
 	
@@ -28,8 +31,7 @@ class BucketParser(ContentHandler):
     </Contents>
     <Contents>...</Contents>
     <CommonPrefixes><Prefix>foo/bar</Prefix></CommonPrefixes>
-		<CommonPrefixes><Prefix>foo/baz</Prefix></CommonPrefixes>
-  """
+		<CommonPrefixes><Prefix>foo/baz</Prefix></CommonPrefixes>"""
 	
 	def __init__(self, content=None):
 		self.name = None
@@ -45,8 +47,11 @@ class BucketParser(ContentHandler):
 		self.contents = []
 		self.handler = None
 		
-		if content:
+		try:
 			xml.sax.parseString(content, self)
+		except:
+			logging.info('Error parsing response: %s' % traceback.format_exc())
+			raise
 			
 	def __json__(self):
 		return dict(name=self.name, prefix=self.prefix, maxKeys=self.max_keys, isTrucated=self.is_truncated, contents=self.files, commonPrefixes=self.prefixes)
@@ -115,7 +120,7 @@ class BucketParser(ContentHandler):
 			self.max_keys = content
 
 
-class PrefixesParser(ContentHandler):
+class PrefixesParser(Parser):
 	'''SAX parser for CommonPrefixes'''
 	
 	def __init__(self, bucket_name, prefix):
@@ -142,7 +147,7 @@ class PrefixesParser(ContentHandler):
 		if name == 'Prefix':
 			prefix_name = content
 			if self.prefix and self.prefix.endswith('/'):
-				prefix_name = re.sub('\A%s' % self.prefix, '', prefix_name)
+				prefix_name = re.sub('\A%s' % re.escape(self.prefix), '', prefix_name)
 				
 			file = S3File(self.bucket_name, prefix_name)
 			file.is_folder = True

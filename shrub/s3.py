@@ -30,6 +30,7 @@ class S3:
 
 				# Retry on 5xx errors as well as urlfetch exceptions
 				if int(response.status_code) in xrange(500, 600):
+					logging.info('Failed with status: %s, retrying' % (response.status_code))
 					continue
 
 				return response, try_count, times
