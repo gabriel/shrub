@@ -24,7 +24,7 @@
       
         %if s3response.is_truncated:
           <hr/>
-          <p><a href="/${path}/?marker=${s3response.next_marker | u}">Next page</a>
+          <p><a href="${next_page_url}">Next page</a>
           &mdash;
           <span class="info">The response was truncated (max-keys=${s3response.data.max_keys}).</span>
           </p>

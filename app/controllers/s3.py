@@ -117,13 +117,20 @@ class HTMLResponse(base.BaseResponse):
 				warning_message = 'Because the result was truncated, the sort option was ignored.'
 		else:
 		# Sort files
-			sort = self.request.get('s', 'name')
-			sort_asc = True
-			if sort.endswith('-desc'):
-				sort = sort.replace('-desc', '', 1)
-				sort_asc = False
+			sort = self.request.get('s', 'date')
+			sort_asc = self.request.get('sd', 'desc') == 'asc'
 
 		files.sort(cmp=lambda x, y: shrub.utils.file_comparator(x, y, sort, sort_asc))
+
+		# Default url options to pass through to links
+		url_options = dict()
+		max_keys = self.request.get('max-keys', None)
+		if max_keys:
+			url_options['max-keys'] = max_keys
+
+		next_page_url_options = url_options.copy()
+		next_page_url_options['marker'] = s3response.next_marker
+		next_page_url = '/%s/?%s' % (path, shrub.utils.params_to_url(next_page_url_options, True))
 
 		# Render response
 		template_values = {
@@ -132,6 +139,8 @@ class HTMLResponse(base.BaseResponse):
 			'path': path,
 			'sort': sort,
 			'sort_asc': sort_asc,
+			'url_options': url_options,
+			'next_page_url': next_page_url,
 			's3response': s3response,
 			'warning_message': warning_message
 		}
