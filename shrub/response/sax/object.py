@@ -1,8 +1,6 @@
-import logging
+import logging, re, iso8601
 import xml.sax
 from xml.sax.handler import ContentHandler
-import re
-import iso8601
 
 from shrub.file import S3File
 
@@ -32,24 +30,32 @@ class ObjectParser(ContentHandler):
 		if name == 'Key':
 			key = content
 			self.file = S3File(self.bucket_name, key)
-			
+
 			is_folder = False
-			
+
 			if self.prefix and self.prefix.endswith('/'):
 				self.file.name = re.sub(re.escape(self.prefix), '', key)
-				
-				# Check if folder
+
+			if not self.file.name:
+				self.file = None
+				return
+
+			# Check if folder
 			p = re.compile('_\$folder\$\Z')
 			if p.search(self.file.name):
 				self.file.name = p.sub('', self.file.name) + "/"
 				self.file.is_folder = True
-				
+
 		elif name == 'ETag':
-			self.file.etag = content
+			if self.file:
+				self.file.etag = content
 		elif name == 'LastModified':
-			self.file.last_modified = iso8601.parse_date(content)
+			if self.file:
+				self.file.last_modified = iso8601.parse_date(content)
 		elif name == 'Size':
-			self.file.size = long(content)
+			if self.file:
+				self.file.size = long(content)
 		elif name == 'StorageClass':
-			self.file.storage_class = content
+			if self.file:
+				self.file.storage_class = content
 

@@ -9,7 +9,7 @@
 
     <h1>      
       %for i in range(len(path_components)):
-        <a href="/${'/'.join(path_components[0:i+1])}/">${path_components[i]}</a> <span>/</span>
+        <a href="/${'/'.join(path_components[0:i+1])}/">${path_names[i]}</a> <span>/</span>
       %endfor
     </h1>
     

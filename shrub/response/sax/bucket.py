@@ -2,8 +2,6 @@ import re, iso8601, traceback, logging
 import xml.sax
 from xml.sax.handler import ContentHandler, ErrorHandler
 
-
-
 from shrub.file import S3File
 
 from shrub.response.sax.object import ObjectParser
@@ -88,6 +86,10 @@ class BucketParser(Parser):
 		
 		if name == 'Contents':
 			file = self.handler.file
+			if not file:
+				self.handler = None
+				return
+
 			self.files.append(file)
 			if file.is_folder:
 				self.dirs.add(file.name)
@@ -96,7 +98,7 @@ class BucketParser(Parser):
 			return
 		elif name == 'CommonPrefixes':
 			for prefix in self.handler.prefixes:
-				if not prefix.name in self.dirs:
+				if not prefix.name in self.dirs and prefix.name:
 					self.files.append(prefix)
 					
 			self.handler = None
@@ -122,7 +124,7 @@ class BucketParser(Parser):
 
 class PrefixesParser(Parser):
 	'''SAX parser for CommonPrefixes'''
-	
+
 	def __init__(self, bucket_name, prefix):
 		self.bucket_name = bucket_name
 		self.prefix = prefix
@@ -131,24 +133,27 @@ class PrefixesParser(Parser):
 		
 	def startElement(self, name, attrs):
 		return None
-		
+
 	def characters(self, content):
 		self.contents.append(content)
-		
+
 	def content(self):
 		content = u''.join(self.contents)
 		self.contents = []
 		return content
-		
+
 	def endElement(self, name):
-	
+
 		content = self.content()
-		
+
 		if name == 'Prefix':
 			prefix_name = content
 			if self.prefix and self.prefix.endswith('/'):
 				prefix_name = re.sub('\A%s' % re.escape(self.prefix), '', prefix_name)
-				
+
+			if not prefix_name or prefix_name == '/':
+				return
+
 			file = S3File(self.bucket_name, prefix_name)
 			file.is_folder = True
 			self.prefixes.append(file)

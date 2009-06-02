@@ -18,7 +18,8 @@ class TapeResponse(BaseResponse):
 		tracks = [file.xspf_track for file in s3response.files if file.extension == 'mp3']
 		id3_urls = ['%s?format=id3-json' % file.appspot_url for file in s3response.files if file.extension == 'mp3']
 
-		values = dict(title='Mix Tape (%s)' % s3response.path, xspf_url=xspf_url, list_url=list_url, tracks=tracks, id3_urls=id3_urls, s3response=s3response)
+		title = 'Mix Tape (%s)' % shrub.utils.url_unescape(s3response.path)
+		values = dict(title=title, xspf_url=xspf_url, list_url=list_url, tracks=tracks, id3_urls=id3_urls, s3response=s3response)
 
 		self.render("muxtape.mako", values)
 
@@ -29,6 +30,7 @@ class XSPFResponse(BaseResponse):
 		url = s3response.url
 		files = s3response.files
 		path = s3response.path
+		title = shrub.utils.url_unescape(path)
 
 		exts = self.request.get('exts', None)
 		extensions = None
@@ -42,9 +44,9 @@ class XSPFResponse(BaseResponse):
 		files.sort(cmp=lambda x, y: shrub.utils.file_comparator(x, y, 'name', True))
 
 		tracks = [file.xspf_track for file in files if not extensions or file.extension in extensions]
-		logging.info("Tracks: %s" % ([str(track) for track in tracks]))
+		#logging.info("Tracks: %s" % ([str(track) for track in tracks]))
 
-		values = dict(title=path, creator='Shrub', info='http://shrub.appspot.com', location=url, tracks=tracks)
+		values = dict(title=title, creator='Shrub', info='http://shrub.appspot.com', location=url, tracks=tracks)
 
 		self.render("xspf.mako", values, 'text/xml; charset=utf-8')
 
@@ -57,8 +59,8 @@ class ID3Response(JSONResponse):
 			return
 
 		callback = self.request.get("callback", None)
-		
-		logging.info("Loading url: %s" % url)
+
+		#logging.info("Loading url: %s" % url)
 		fetch_headers = dict(Range='bytes=0-1024')
 		response = urlfetch.fetch(url, headers=fetch_headers, allow_truncated=True)
 
@@ -69,7 +71,7 @@ class ID3Response(JSONResponse):
 			if not id3r.found:
 				self.render_json(dict(error='Not found'))
 				return
-				
+
 			values = dict(
 				album=id3r.getValue('album'),
 				performer=id3r.getValue('performer'),

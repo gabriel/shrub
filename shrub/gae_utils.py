@@ -1,6 +1,7 @@
 import os
-from shrub.utils import url_unescape
 import logging
+
+import shrub.utils
 
 def current_gae_url():
 	name = os.environ['SERVER_NAME']
@@ -11,8 +12,8 @@ def current_gae_url():
 
 def parse_gae_request(request, prefix=None):
 	"""Parse bucket name and prefix from gae request."""
-	request_path = url_unescape(request.path)
-	logging.info('request_path=%s (%s)' % (request_path, request.path))
+	request_path = shrub.utils.url_unescape(request.path)
+	#logging.info('request_path=%s (%s); prefix=%s' % (request_path, request.path, prefix))
 	if prefix:
 		request_path = re.sub('%s$' % prefix, '', request_path)
 

@@ -1,6 +1,6 @@
 from shrub.response.sax.bucket import BucketParser
 
-import logging
+import shrub.utils
 
 class S3BaseResponse(object):
 
@@ -24,20 +24,19 @@ class S3Response(S3BaseResponse):
 		self.message = None
 		self._data = None
 
-	@property
-	def path_components(self):
+	def path_components(self, url_escape=True):
 		bucket_name = self.data.name
 		prefix = self.data.prefix
-		
+
 		dirs = [ bucket_name ]
 		if prefix:
-			dirs += prefix.split("/")[:-1]
-			
+			dirs += [shrub.utils.url_escape(p) if url_escape else p for p in prefix.split("/")[:-1]]
+
 		return dirs
 
 	@property
 	def path(self):
-		return u'/'.join(self.path_components)
+		return u'/'.join(self.path_components())
 
 	@property
 	def total_time(self):

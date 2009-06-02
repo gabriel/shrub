@@ -39,10 +39,10 @@ class S3Page(base.BasePage):
   """
 	
 	def _get(self):
+		format = self.request.get('format', None)
 		max_keys = self.request.get('max-keys')
 		delimiter = self.request.get('delimiter', '/')
 		marker = self.request.get('marker', None)
-		format = self.request.get('format', None)
 
 		cache_key = self.request.url
 
@@ -106,7 +106,8 @@ class HTMLResponse(base.BaseResponse):
 
 	def handle(self, s3response):
 		files = s3response.files
-		path_components = s3response.path_components
+		path_components = s3response.path_components()
+		path_names = s3response.path_components(url_escape=False)
 		path = s3response.path
 		warning_message = None
 		
@@ -116,9 +117,9 @@ class HTMLResponse(base.BaseResponse):
 			if self.request.get('s', None) is not None:
 				warning_message = 'Because the result was truncated, the sort option was ignored.'
 		else:
-		# Sort files
-			sort = self.request.get('s', 'date')
-			sort_asc = self.request.get('sd', 'desc') == 'asc'
+			# Sort files
+			sort = self.request.get('s', 'name')
+			sort_asc = self.request.get('sd', 'asc') == 'asc'
 
 		files.sort(cmp=lambda x, y: shrub.utils.file_comparator(x, y, sort, sort_asc))
 
@@ -134,7 +135,8 @@ class HTMLResponse(base.BaseResponse):
 
 		# Render response
 		template_values = {
-			'title': path,
+			'title': shrub.utils.url_unescape(path),
+			'path_names': path_names,
 			'path_components': path_components,
 			'path': path,
 			'sort': sort,

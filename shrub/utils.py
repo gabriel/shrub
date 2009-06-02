@@ -5,7 +5,7 @@ import re
 def html_escape(string):
 	return cgi.escape(string, True)
 
-def url_escape(string, plus=True):
+def url_escape(string, plus=False):
 	# convert into a list of octets
 	string = string.encode("utf8")
 	return urllib.quote_plus(string) if plus else urllib.quote(string)
