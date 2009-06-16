@@ -61,7 +61,7 @@
           <td>
             %if file.is_folder:
               <img src="/shrub/images/folder.png"/>
-              <a class="name folder" href="/${file.name_with_prefix(path, True)}">${file.name | h}</a>              
+              <a class="name folder" href="/${file.name_with_prefix(path, False)}">${file.name | h}</a>              
             %else:
               <img src="/shrub/images/page_white.png"/>
               <a class="name file" href="${file.url}">${file.name | h}</a>
