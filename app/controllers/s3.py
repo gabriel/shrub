@@ -110,18 +110,25 @@ class HTMLResponse(base.BaseResponse):
 		path_names = s3response.path_components(url_escape=False)
 		path = s3response.path
 		warning_message = None
-		
+
+		sort = 'name'
+		sort_property = 'key'
+		sort_asc = True
+
 		if s3response.is_truncated:
-			sort = 'name'
-			sort_asc = True
 			if self.request.get('s', None) is not None:
 				warning_message = 'Because the result was truncated, the sort option was ignored.'
 		else:
-			# Sort files
 			sort = self.request.get('s', 'name')
-			sort_asc = self.request.get('sd', 'asc') == 'asc'
+			if sort.endswith(':d'): 
+				sort_asc = False
+				sort = sort[:-2]
+			# Change sort aliases
+			if sort == 'date': sort_property = 'last_modified'
+			elif sort == 'name': sort_property = 'key'
+			elif sort == 'size': sort_property = 'size'
 
-		files.sort(cmp=lambda x, y: shrub.utils.file_comparator(x, y, sort, sort_asc))
+		files.sort(cmp=lambda x, y: shrub.utils.file_comparator(x, y, sort_property, sort_asc))
 
 		# Default url options to pass through to links
 		url_options = dict()
@@ -163,7 +170,7 @@ class RSSResponse(base.BaseResponse):
 		path = s3response.path
 		
 		rss_items = []
-		files.sort(cmp=lambda x, y: shrub.utils.file_comparator(x, y, 'date', False))
+		files.sort(cmp=lambda x, y: shrub.utils.file_comparator(x, y, 'last_modified', False))
 
 		for file in files[:50]:
 			rss_items.append(file.to_rss_item())

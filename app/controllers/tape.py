@@ -41,7 +41,7 @@ class XSPFResponse(BaseResponse):
 		if self.request.get('format', '') == 'xspfm':
 			extensions = ['mp3']
 
-		files.sort(cmp=lambda x, y: shrub.utils.file_comparator(x, y, 'name', True))
+		files.sort(cmp=lambda x, y: shrub.utils.file_comparator(x, y, 'key', True))
 
 		tracks = [file.xspf_track for file in files if not extensions or file.extension in extensions]
 		#logging.info("Tracks: %s" % ([str(track) for track in tracks]))

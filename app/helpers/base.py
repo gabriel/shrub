@@ -8,4 +8,4 @@ def to_json(context, value):
 	return simplejson.dumps(value)
 
 def shrub_version(context):
-	return "1.2.14"
+	return "1.2.15"

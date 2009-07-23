@@ -28,9 +28,6 @@ def params_to_url(params, urlescape=False):
 	return '&'.join(pairs)
 
 def file_comparator(x, y, sort, sort_asc):
-	# Change sort aliases
-	if sort == "date": sort = "last_modified"
-	if sort == "name": sort = "key"
 
 	a = b = None
 
@@ -42,8 +39,8 @@ def file_comparator(x, y, sort, sort_asc):
 	elif a is not None and b is None: return -1
 	elif a is None and b is None: return 0
 
-	if isinstance(a, str): a = a.lower()
-	if isinstance(b, str): b = b.lower()
+	if isinstance(a, str) or isinstance(a, unicode): a = a.lower()
+	if isinstance(b, str) or isinstance(b, unicode): b = b.lower()
 
 	if sort_asc: return cmp(a, b)
 	else: return cmp(b, a)
