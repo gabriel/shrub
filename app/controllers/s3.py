@@ -43,10 +43,13 @@ class S3Page(base.BasePage):
 		max_keys = self.request.get('max-keys')
 		delimiter = self.request.get('delimiter', '/')
 		marker = self.request.get('marker', None)
+		prefix = self.request.get('prefix', None)
 
 		cache_key = self.request.url
 
-		bucket_name, prefix = shrub.gae_utils.parse_gae_request(self.request)
+		bucket_name, prefix_from_request = shrub.gae_utils.parse_gae_request(self.request)
+		if prefix is None:
+			prefix = prefix_from_request
 
 		if not bucket_name:
 			handler = ErrorResponse(self)

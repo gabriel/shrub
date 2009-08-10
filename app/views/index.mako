@@ -54,17 +54,55 @@
           <p>These parameters are available to all requests.</p>
           <table id="url-params" class="tabular">
             <thead>
-              <tr><th>Parameter</th> <th>Description</th> <th>Accepted</th> <th>Default</th></tr>
+              <tr>
+                <th>Parameter</th>
+                <th>Description</th> 
+                <th>Accepted</th>
+                <th>Default</th>
+                <th>Example</th>
+              </tr>
             <tbody>
             <tr>
-              <td>format</td> <td>Response format</td> 
-              <td><a href="#rss">rss</a><br/><a href="#json">json</a><br/><a href="#id3">id3-json</a><br/><a href="#xspf">xspf</a><br/><a href="#tape">tape</a></td> 
+              <td>format</td> 
+              <td>Response format</td> 
+              <td>
+                <a href="#rss">rss</a><br/>
+                <a href="#json">json</a><br/>
+                <a href="#id3">id3-json</a><br/>
+                <a href="#xspf">xspf</a><br/>
+                <a href="#tape">tape</a>
+              </td> 
               <td>None (HTML)</td>
+              <td><a href="http://shrub.appspot.com/s3hub?format=rss">http://shrub.appspot.com/s3hub?format=rss</a></td>
             </tr>
-            <tr><td>delimiter</td> <td>See S3 docs</td> <td>Passed to S3</td> <td> / </td></tr>
-            <tr><td>prefix</td> <td>See S3 docs</td> <td>Passed to S3</td> <td> </td></tr>
-            <tr><td>marker</td> <td>See S3 docs</td> <td>Passed to S3</td> <td> </td></tr>
-            <tr><td>max-keys</td> <td>See S3 docs</td> <td>Passed to S3</td> <td> </td></tr>
+            <tr>
+              <td>delimiter</td>
+              <td>See S3 docs</td>
+              <td>Passed to S3</td>
+              <td> / </td>
+              <td><a href="http://shrub.appspot.com/s3hub?delimiter=">http://shrub.appspot.com/s3hub?delimiter=</a></td>
+            </tr>
+            <tr>
+              <td>prefix</td>
+              <td>See S3 docs</td>
+              <td>Passed to S3</td>
+              <td> </td>
+              <td><a href="http://shrub.appspot.com/s3hub?prefix=S3Hub-0.5.2">http://shrub.appspot.com/s3hub?prefix=S3Hub-0.5.2</a></td>
+            </tr>
+            <tr>
+              <td>marker</td>
+              <td>See S3 docs</td>
+              <td>Passed to S3</td>
+              <td> </td>
+              <td><a href="http://shrub.appspot.com/s3hub/?marker=S3Hub-0.5.12-special3.dmg&max-keys=10">http://shrub.appspot.com/s3hub/?marker=S3Hub-0.5.12-special3.dmg&max-keys=10</a></td>
+            </tr>
+            <tr>
+              <td>max-keys</td>
+              <td>See S3 docs</td>
+              <td>Passed to S3</td>
+              <td> </td>
+              <td><a href="http://shrub.appspot.com/s3hub?max-keys=5">http://shrub.appspot.com/s3hub?max-keys=5</a></td>
+            </tr>
             </tbody>
           </table>
           <p><span class="disclaimer">See below for more info.</span></p>
@@ -112,7 +150,7 @@
           </table>
           <br/>
           <br/>
-          <p>Example of <a href="http://shrub.appspot.com/s3hub?format=json">http://shrub.appspot.com/s3hub?format=json&callback=myCallback</a>:</p>
+          <p>Example of <a href="http://shrub.appspot.com/s3hub?format=json&callback=myCallback">http://shrub.appspot.com/s3hub?format=json&callback=myCallback</a>:</p>
           <br/>
 <pre>
 myCallback({"maxKeys": "1000", "prefix": "", ...})
@@ -131,9 +169,9 @@ myCallback({"maxKeys": "1000", "prefix": "", ...})
   "title": "The Distance (Ft. Arthur & Yu)",
   "track": "5/9",
   "year": null,
-  "isTruncated": false }
-          </pre>
+  "isTruncated": false }</pre>
 
+ <hr/>
           <p>
             Currently, Shrub will only get the first 1024 bytes of the mp3 (using the Range: bytes=0-1024 header) and will parse as much ID3 tag information as it can. ID3 tag information should be in the beginning of the file (so ID3v1 is not supported). If there was more information after the first 1024 bytes, then the isTruncated will be true. ID3 info is cached for 5 minutes.
           </p>
