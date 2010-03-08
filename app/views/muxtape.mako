@@ -13,9 +13,9 @@
       <div id="shrub-player" class="flash-player warn"><span>You need Javascript enabled and/or a recent version of Flash.</span></div>
       
       <p>
-      <a id="tape-play" href="" onClick="shrubTape.playTrack(shrubPlayer.getCurrentTrack(), true); return false;">Play</a>
-      <a id="tape-stop" href="" onClick="shrubTape.stop(); return false;">Stop</a>
-      <a id="tape-skip1" href="" onClick="shrubPlayer.jump(30); return false;">Jump</a>
+      <a id="tape-play" href="" onClick="ShrubTape.playTrack(ShrubPlayer.getCurrentTrack(), true); return false;">Play</a>
+      <a id="tape-stop" href="" onClick="ShrubTape.stop(); return false;">Stop</a>
+      <a id="tape-skip1" href="" onClick="ShrubPlayer.jump(30); return false;">Jump</a>
       </p>
     </div>
 
@@ -56,7 +56,7 @@
 <script type="text/javascript">
 // Callback from player.swf load
 function playerReady(obj) {
-  shrubPlayer.setPlayer(obj);
+  ShrubPlayer.setPlayer(obj);
 }
 </script>
 
@@ -71,13 +71,13 @@ var loadID3 = function() {
   for(var i = 0, length = ${len(tracks)}; i < length; i++) {
     (function(index) {
       $("#song-" + index).click(function() {
-        shrubTape.playTrack(index, true);
+        ShrubTape.playTrack(index, true);
       });     
     })(i);
   }
   
   var id3Urls = ${base.to_json(id3_urls)};
-  shrubTape.loadID3Urls(id3Urls);     
+  ShrubTape.loadID3Urls(id3Urls);     
 };
 
 $(document).ready(loadID3);

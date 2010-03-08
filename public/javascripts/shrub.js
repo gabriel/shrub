@@ -2,7 +2,7 @@
  Player.
  Controls and handles current state for the player.
 */
-var shrubPlayer = (function() {
+var ShrubPlayer = (function() {
   
   var _player;
   var _isReady = false;
@@ -86,12 +86,12 @@ var shrubPlayer = (function() {
     	var client = player.client;
     	//console.log("Player: " + id + ", version: " + version + ", client: " + client);
       _player = document.getElementById(id);      
-      _player.addModelListener('STATE', 'shrubPlayer.updateState');
-    	_player.addModelListener('TIME', 'shrubPlayer.updateTime');
-      _player.addControllerListener('ITEM', 'shrubPlayer.updateItem');  	  
-      _player.addModelListener('LOADED', 'shrubPlayer.updateLoaded');
-      _player.addModelListener('ERROR', 'shrubPlayer.onError');
-      _player.addModelListener('META', 'shrubPlayer.updateMeta');
+      _player.addModelListener('STATE', 'ShrubPlayer.updateState');
+    	_player.addModelListener('TIME', 'ShrubPlayer.updateTime');
+      _player.addControllerListener('ITEM', 'ShrubPlayer.updateItem');  	  
+      _player.addModelListener('LOADED', 'ShrubPlayer.updateLoaded');
+      _player.addModelListener('ERROR', 'ShrubPlayer.onError');
+      _player.addModelListener('META', 'ShrubPlayer.updateMeta');
       _isReady = true;
   	},
   	
@@ -106,7 +106,7 @@ var shrubPlayer = (function() {
   	},
   	
   	play: function(index, options) {
-  	  shrubPlayer.reset();
+  	  ShrubPlayer.reset();
   	  var changed = false;
   	  if (index >= 0 && _currentTrack != index) {
   	    changed = true;
@@ -164,7 +164,7 @@ var shrubPlayer = (function() {
 /*
  Loads ID3 information, asynchronously and in order.
 */
-var shrubTape = (function() {
+var ShrubTape = (function() {
   
   var _currentId3Index = -1;
   var _urls;
@@ -191,7 +191,7 @@ var shrubTape = (function() {
             $(name_id).html(id3.performer + " - " + id3.title);
           if (!!id3.album) {
             //var albumSearch = "http://www.amazon.com/s/ref=nb_ss_m?url=search-alias%3Dmusic-album&tag=ducktyper-20&field-keywords=" + id3.album;
-            //"<a href='" + albumSearch + "' onClick='shrubPlayer.stop();'>" + id3.album + "</a>"
+            //"<a href='" + albumSearch + "' onClick='ShrubPlayer.stop();'>" + id3.album + "</a>"
             $("#song-" + _currentId3Index + " .song-album").html(id3.album);
           }
         } else {
@@ -222,7 +222,7 @@ var shrubTape = (function() {
     },
     
     stop: function() {
-      shrubPlayer.stop();
+      ShrubPlayer.stop();
       // Reset all song positions
       $("#tape-play").html("Play");   
     },
@@ -233,7 +233,7 @@ var shrubTape = (function() {
       // If this song playing stop it
       if (!toggle || node.hasClass("playing")) {   
         $("#songs .song").removeClass("playing");          
-        shrubPlayer.pause();
+        ShrubPlayer.pause();
         $("#tape-play").html("Play");
         if (toggle) return;
       }
@@ -241,13 +241,13 @@ var shrubTape = (function() {
       this.reset();
       
       // Play node      
-      shrubPlayer.play(track, this);                    
+      ShrubPlayer.play(track, this);                    
   	  $("#tape-play").html("Pause");
       node.addClass("playing");
       $("#song-" + track + " .song-position").show();
     },
 
-    // Listeners, in shrubPlayer.play(track, this);
+    // Listeners, in ShrubPlayer.play(track, this);
     
     onPositionChange: function(track, time, percentage) {
       //console.log("Position change: " + track + "; " + time + " (" + percentage + ")");
