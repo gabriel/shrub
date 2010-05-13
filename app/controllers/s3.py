@@ -12,6 +12,7 @@ from mako.lookup import TemplateLookup
 
 import shrub.utils
 import shrub.gae_utils
+from shrub.file import S3File
 from shrub.s3 import S3
 
 from app.controllers import base
@@ -57,8 +58,8 @@ class S3Page(base.BasePage):
 			return
 
 		if format == 'id3-json':
-			url = 'http://%s/%s' % (S3.DefaultLocation, self.request.path)
-			tape.ID3Response(self).load_url(url, 'json', cache_key=cache_key)
+			s3file = S3File(bucket_name, prefix_from_request)
+			tape.ID3Response(self).load_url(s3file.to_url(), 'json', cache_key=cache_key)
 			return
 
 		# Make S3 request

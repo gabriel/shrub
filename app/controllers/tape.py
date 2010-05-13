@@ -69,7 +69,7 @@ class ID3Response(JSONResponse):
 			id3r = id3reader.Reader(data, only_v2=True)
 			
 			if not id3r.found:
-				self.render_json(dict(error='Not found'))
+				self.render_json(dict(error='Not found', url=url))
 				return
 
 			values = dict(
@@ -85,5 +85,5 @@ class ID3Response(JSONResponse):
 				self.render_json(values, cache_key=cache_key, callback=callback)
 
 		except id3reader.Id3Error, detail:
-			self.render_json(dict(error=str(detail)))
+			self.render_json(dict(error=str(detail), url=url))
 

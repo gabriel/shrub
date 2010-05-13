@@ -97,7 +97,10 @@ class S3File:
 	def to_url(self, secure=False):
 		scheme = 'http';
 		if secure: scheme = 'https'
-		return u'%s://%s/%s/%s' % (scheme, self.DefaultLocation, url_escape(self.bucket), url_escape(self.key))
+		if self.bucket.islower():
+			return u'%s://%s.%s/%s' % (scheme, url_escape(self.bucket), self.DefaultLocation, url_escape(self.key))
+		else:
+			return u'%s://%s/%s/%s' % (scheme, self.DefaultLocation, url_escape(self.bucket), url_escape(self.key))
 	url = property(to_url)
 	
 	def to_rss_item(self):
